@@ -253,29 +253,29 @@ shinyServer(function(input, output, session) {
   })
   
   # Show network measures
-  output$netTable <- renderDataTable({
+  output$netTable <- DT::renderDataTable({
     if (is.null(data()))
       return(NULL)
     if (input$netMeasure == "amat") {
-      amat(dag())
+      DT::datatable(amat(dag()))
     } else if (input$netMeasure == "arcs") {
-      arcs(dag())
+      DT::datatable(arcs(dag()))
     } else if (input$netMeasure == "directed.arcs") {
-      directed.arcs(dag())
+      DT::datatable(directed.arcs(dag()))
     } else if (input$netMeasure == "undirected.arcs") { 
-      undirected.arcs(dag())
+      DT::datatable(undirected.arcs(dag()))
     } else if (input$netMeasure == "root.nodes") {
-      root.nodes(dag())
+      DT::datatable(root.nodes(dag()))
     } else if (input$netMeasure == "leaf.nodes") {
-      leaf.nodes(dag())
+      DT::datatable(leaf.nodes(dag()))
     } else if (input$netMeasure == "root.nodes") {
-      root.nodes(dag())
+      DT::datatable(root.nodes(dag()))
     } else if (input$netMeasure == "leaf.nodes") {
-      leaf.nodes(dag())
+      DT::datatable(leaf.nodes(dag()))
     } else if (input$netMeasure == "compelled.arcs") {
-      compelled.arcs(dag())
+      DT::datatable(compelled.arcs(dag()))
     } else {
-      nnodes(dag())
+      DT::datatable(nnodes(dag()))
     }
   }, options = list(paging = FALSE, searching = FALSE))
   
