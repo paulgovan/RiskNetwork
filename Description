@@ -12,5 +12,5 @@ Depends:
     R (>= 3.0.0)
 Imports:
     bnlearn,
-    networkD3,
-    shiny
+    shiny,
+    networkD3
