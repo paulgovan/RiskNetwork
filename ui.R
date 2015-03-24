@@ -209,7 +209,7 @@ dashboardPage(skin="black",
                             ),
                             box(
                               title = "Network Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
-                              dataTableOutput("netTable")
+                              DT::dataTableOutput("netTable")
                             )
                           )
                   ),
