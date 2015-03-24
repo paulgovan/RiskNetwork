@@ -7,6 +7,5 @@ This README includes information on getting started with the app.
 
 For more information about RiskNetwork, visit [RiskNetwork](http://paulgovan.wix.com/RiskNetwork).
 # Get Started
-You can access the app through your browser at [paulgovan.wix.com/RiskNetwork](http://paulgovan.wix.com/risknetwork)
+You can access the app through your browser at [paulgovan.wix.com/RiskNetwork](http://paulgovan.wix.com/risknetwork) or directly at [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork).
 
-or directly at [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork)
