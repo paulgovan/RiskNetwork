@@ -8,6 +8,7 @@ Version 0.1
 * Learn the paramaters of your network with effective paramater learning methods
 * Measure the importance of connections in your network with node and network measures
 * Generate data from your network and export to your favorite app
+
 # Documentation
 This README includes information on getting started with the app.
 
