@@ -1,39 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>RiskNetwork by paulgovan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Risknetwork by paulgovan</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Risknetwork</h1>
-        <h2>Risk network modeling and analysis</h2>
-        <a href="https://github.com/paulgovan/RiskNetwork" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">RiskNetwork</h1>
+      <h2 class="project-tagline">Risk network modeling and analysis</h2>
+      <a href="https://github.com/paulgovan/RiskNetwork" class="btn">View on GitHub</a>
+      <a href="https://github.com/paulgovan/RiskNetwork/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/paulgovan/RiskNetwork/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
+    <section class="main-content">
+      <h1>
 <a id="risknetwork" class="anchor" href="#risknetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>RiskNetwork</h1>
 
 <p>Risk network modeling and analysis</p>
-
-<p>Version 0.1 </p>
 
 <h1>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h1>
@@ -47,43 +36,58 @@
 </ul>
 
 <h1>
-<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h1>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
 
-<p>This README includes information on getting started with the app.</p>
-
-<p>For more information about RiskNetwork, visit <a href="http://paulgovan.wix.com/RiskNetwork">RiskNetwork</a>.</p>
+<p>RiskNetwork is a <a href="http://shiny.rstudio.com">Shiny</a> web application, powered by the excellent <a href="http://www.bnlearn.com">bnlearn</a> and <a href="http://christophergandrud.github.io/networkD3/">networkD3</a> packages.</p>
 
 <h1>
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
 
-<p>You can access the app through your browser at <a href="http://paulgovan.wix.com/risknetwork">paulgovan.wix.com/RiskNetwork</a> or directly at <a href="https://paulgovan.shinyapps.io/risknetwork">paulgovan.shinyapps.io/RiskNetwork</a>. Finally, you can run the app in R with:</p>
+<p>You can run RiskNetwork in <a href="https://www.r-project.org">R</a> with:</p>
 
 <div class="highlight highlight-S"><pre>require(shiny)
 runGitHub(<span class="pl-s"><span class="pl-pds">'</span>paulgovan/risknetwork<span class="pl-pds">'</span></span>)</pre></div>
 
+<p>Or you can access the app through your browser at <a href="https://paulgovan.shinyapps.io/risknetwork">paulgovan.shinyapps.io/RiskNetwork</a>. For more information about the app, visit the <a href="http://paulgovan.wix.com/RiskNetwork">RiskNetwork</a> site.</p>
+
+<h1>
+<a id="source-code" class="anchor" href="#source-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Source Code</h1>
+
+<p>The source code and project data is available at <a href="https://github.com/paulgovan/RiskNetwork">https://github.com/paulgovan/RiskNetwork</a></p>
+
+<h1>
+<a id="issues" class="anchor" href="#issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Issues</h1>
+
+<p>For issues or requests, please use the GitHub issue tracker at <a href="https://github.com/paulgovan/RiskNetwork/issues">https://github.com/paulgovan/RiskNetwork/issues</a></p>
+
+<h1>
+<a id="contributions" class="anchor" href="#contributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributions</h1>
+
+<p>RiskNetwork is an <a href="http://opensource.org">open source</a> project, and contributions are welcome by sending a <a href="https://github.com/paulgovan/RiskNetwork/pulls">pull request</a></p>
+
 <h1>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
 
-<p>Copyright 2015 by Paul Govan</p>
-        </section>
+<p>RiskNetwork is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache</a> licence. © Paul Govan (2015)</p>
 
-        <aside id="sidebar">
-          <a href="https://github.com/paulgovan/RiskNetwork/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/paulgovan/RiskNetwork/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/paulgovan/RiskNetwork">RiskNetwork</a> is maintained by <a href="https://github.com/paulgovan">paulgovan</a>.</span>
 
-          <p class="repo-owner"><a href="https://github.com/paulgovan/RiskNetwork"></a> is maintained by <a href="https://github.com/paulgovan">paulgovan</a>.</p>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+    </section>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-55385257-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
