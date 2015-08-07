@@ -1,7 +1,6 @@
 # RiskNetwork
 Risk network modeling and analysis
 
-Version 0.1 
 # Features
 * Create interactive risk network models in the cloud
 * Learn the structure of your network with powerful structural learning algorithms
@@ -9,17 +8,27 @@ Version 0.1
 * Measure the importance of connections in your network with node and network measures
 * Generate data from your network and export to your favorite app
 
-# Documentation
-This README includes information on getting started with the app.
+# Overview
+RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages.
 
-For more information about RiskNetwork, visit the [RiskNetwork](http://paulgovan.wix.com/RiskNetwork) site.
 # Getting Started
-You can access the app through your browser at [paulgovan.wix.com/RiskNetwork](http://paulgovan.wix.com/risknetwork) or directly at [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork). Finally, you can run the app in R with:
+You can run RiskNetwork in [R](https://www.r-project.org) with:
 
 ```S
 require(shiny)
 runGitHub('paulgovan/risknetwork')
 ```
-# License
-Copyright 2015 by Paul Govan
 
+Or you can access the app through your browser at [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork). For more information about the app, visit the [RiskNetwork](http://paulgovan.wix.com/RiskNetwork) site.
+
+# Source Code
+The source code and project data is available at [https://github.com/paulgovan/RiskNetwork](https://github.com/paulgovan/RiskNetwork)
+
+# Issues
+For issues or requests, please use the GitHub issue tracker at [https://github.com/paulgovan/RiskNetwork/issues](https://github.com/paulgovan/RiskNetwork/issues)
+
+# Contributions
+RiskNetwork is an [open source](http://opensource.org) project, and contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls)
+
+# License
+RiskNetwork is licensed under the [Apache](http://www.apache.org/licenses/LICENSE-2.0) licence. &copy; Paul Govan (2015)
