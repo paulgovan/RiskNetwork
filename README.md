@@ -28,7 +28,7 @@ RiskNetwork is an [open source](http://opensource.org) project, and the source c
 For issues or requests, please use the GitHub issue tracker at [https://github.com/paulgovan/RiskNetwork/issues](https://github.com/paulgovan/RiskNetwork/issues)
 
 # Contributions
-Contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls)
+Contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls).
 
 # License
 RiskNetwork is licensed under the [Apache](http://www.apache.org/licenses/LICENSE-2.0) licence. &copy; Paul Govan (2015)
