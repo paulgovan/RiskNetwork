@@ -9,7 +9,7 @@ Risk network modeling and analysis
 * Generate data from your network and export to your favorite app
 
 # Overview
-RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk network modeling and analysis, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages.
+RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk network modeling and analysis, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages. While this app was developed specifically for risk networks, it can also be used for general [Bayesian Networks](http://singapore.cs.ucla.edu/LECTURE/lecture_sec1.htm). To learn more about our project, see this [publication](http://oaktrust.library.tamu.edu/handle/1969.1/153492).
 
 # Getting Started
 You can run RiskNetwork in [R](https://www.r-project.org) with:
@@ -22,13 +22,13 @@ runGitHub('paulgovan/risknetwork')
 Or you can access the app through your browser at [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork). For more information about the app, visit the [RiskNetwork](http://paulgovan.wix.com/RiskNetwork) site.
 
 # Source Code
-The source code and project data is available at [https://github.com/paulgovan/RiskNetwork](https://github.com/paulgovan/RiskNetwork)
+RiskNetwork is an [open source](http://opensource.org) project, and the source code and project data is available at [https://github.com/paulgovan/RiskNetwork](https://github.com/paulgovan/RiskNetwork)
 
 # Issues
 For issues or requests, please use the GitHub issue tracker at [https://github.com/paulgovan/RiskNetwork/issues](https://github.com/paulgovan/RiskNetwork/issues)
 
 # Contributions
-RiskNetwork is an [open source](http://opensource.org) project, and contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls)
+Contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls)
 
 # License
 RiskNetwork is licensed under the [Apache](http://www.apache.org/licenses/LICENSE-2.0) licence. &copy; Paul Govan (2015)
