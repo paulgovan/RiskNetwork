@@ -9,7 +9,7 @@ Risk network modeling and analysis
 * Generate data from your network and export to your favorite app
 
 # Overview
-RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages.
+RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk network modeling and analysis, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages.
 
 # Getting Started
 You can run RiskNetwork in [R](https://www.r-project.org) with:
