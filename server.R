@@ -15,6 +15,7 @@
 library(bnlearn)
 library(lattice)
 library(networkD3)
+library(rhandsontable)
 
 # By default, the file size limit is 5MB. It can be changed by
 # setting this option. Here we'll raise limit to 9MB.
@@ -82,7 +83,7 @@ shinyServer(function(input, output, session) {
     if (is.null(data()))
       return(NULL)
     nodes <- nnodes(dag())
-    valueBox(nodes, "Nodes", icon = icon("circle-o"), color = "blue")
+    valueBox(nodes, "Nodes", icon = icon("circle"), color = "blue")
   })
   
   # Create the arcs box
@@ -90,7 +91,7 @@ shinyServer(function(input, output, session) {
     if (is.null(data()))
       return(NULL)
     arcs <- narcs(dag())
-    valueBox(arcs, "Arcs", icon = icon("arrows"), color = "green")
+    valueBox(arcs, "Arcs", icon = icon("arrow-right"), color = "green")
   })
   
   # Plot the network
@@ -145,7 +146,7 @@ shinyServer(function(input, output, session) {
       cptC1 <- matrix(c(0.75, 0.25), ncol=2, dimnames=list(NULL, tf))
       cptC2 <- matrix(c(0.5, 0.5), ncol=2, dimnames=list(NULL, tf))
       cptR1 <- matrix(c(0.95, 0.05, 0.25, 0.75), 
-                     ncol=2, dimnames=list("R-1"=tf, "C-1"=tf))
+                      ncol=2, dimnames=list("R-1"=tf, "C-1"=tf))
       cptR2 <- matrix(c(0.75, 0.25, 0.4, 0.6), 
                       ncol=2, dimnames=list("R-2"=tf, "C-2"=tf))
       lh <- c("Low", "High")
@@ -182,6 +183,50 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  # Create data frame for selected paramater
+  DF <- reactive({
+    if (!is.null(input$hot)) {
+      DF = hot_to_r(input$hot)
+      hot_table(highlightCol = TRUE, highlightRow = TRUE,
+                allowRowEdit = FALSE, allowColEdit = FALSE) 
+    } else {
+      DF <- as.data.frame(coef(fit()[[input$Node]]))
+    }
+    if (is.numeric(data()[,1])) {
+      colnames(DF) <- "Param"
+      DF <- cbind(Var = rownames(DF), DF)
+      DF[,"Param"] <- round(DF[,"Param"], digits = 3)
+      DF <- transform(DF, Param = as.numeric(Param))
+    } else {
+      DF[,"Freq"] <- round(DF[,"Freq"], digits = 3)
+      DF <- transform(DF, Freq = as.numeric(Freq))
+    }
+  })
+    
+  # Create handsontable of paramaters for selected node
+  output$handsontable1 <- renderRHandsontable({
+      rhandsontable(DF(), rowHeaders = NULL) %>%
+        hot_table(highlightCol = TRUE, highlightRow = TRUE,
+                  allowRowEdit = FALSE, allowColEdit = FALSE)
+  })
+  
+  # Add expert knowledge to the model
+  output$expertFit <- renderText({
+    if (!is.null(input$hot)) {
+      if (is.numeric(data()[,1])) {
+        stdev <- expertFit[[input$Node]]["sd"]
+        expertFit[[input$Node]] <- list(coef = c(DF()[,"Param"]), sd = stdev)
+      } else {
+        cpt <- coef(expertFit[[input$Node]])
+        cpt[1:length(DF()[,"Freq"])] <- c(DF()[,"Freq"])
+        expertFit[[input$Node]] <- cpt
+      }
+    } else {
+      expertFit <- fit()
+    }
+  })
+  
+  # Set the paramater graphic options
   graphic <- reactive({
     if (is.numeric(data()[,1])) {
       graphic <- c("Histogram"="histogram",
@@ -212,15 +257,40 @@ shinyServer(function(input, output, session) {
       } else if (input$param == "qqplot") {
         bn.fit.qqplot(fit())
       } else if (input$param == "barchart") {
-        bn.fit.barchart(getElement(fit(), input$Node))
+        bn.fit.barchart(fit()[[input$Node]])
       } else if (input$param == "dotplot") {
-        bn.fit.dotplot(getElement(fit(), input$Node))
+        bn.fit.dotplot(fit()[[input$Node]])
       }
     } else
       validate(
         need(try(condPlot != ""), "Make sure your network is completely directed in order to view the paramater infographics...")
       )
   })
+  
+  observe({
+    updateSelectInput(session, "evidence", choices = names(data()))
+  })
+  
+  observe({
+    updateSelectInput(session, "event", choices = names(data()))
+  })
+  
+#   # Perform Bayesian Inference based on evidence and print results
+#   output$distPrint <- renderPrint({
+#     if (is.null(data()))
+#       return(NULL)
+#     if (directed(dag())) {
+#       fitted = fit()
+#       evidence = as.vector(input$evidence)
+#       value = as.vector(input$val)
+#       node.dist <- cpdist(fitted, input$event, eval(parse(text = paste("(", evidence, "=='",
+#                                                                        sapply(value, as.numeric), "')",
+#                                                                        sep = "", collapse = " & "))), method = input$inf)
+#     } else
+#       validate(
+#         need(try(distPlot != ""), "Make sure your network is completely directed in order to perform Bayesian inference...")
+#       )
+#   })
   
   observe({
     updateSelectInput(session, "nodeNames", choices = colnames(data()))
@@ -257,31 +327,27 @@ shinyServer(function(input, output, session) {
     if (is.null(data()))
       return(NULL)
     if (input$netMeasure == "amat") {
-      DT::datatable(amat(dag()))
+      DT::datatable(amat(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "arcs") {
-      DT::datatable(arcs(dag()))
+      DT::datatable(arcs(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "directed.arcs") {
-      DT::datatable(directed.arcs(dag()))
+      DT::datatable(directed.arcs(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "undirected.arcs") { 
-      DT::datatable(undirected.arcs(dag()))
+      DT::datatable(undirected.arcs(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "root.nodes") {
-      DT::datatable(root.nodes(dag()))
+      DT::datatable(root.nodes(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "leaf.nodes") {
-      DT::datatable(leaf.nodes(dag()))
+      DT::datatable(leaf.nodes(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "root.nodes") {
-      DT::datatable(root.nodes(dag()))
+      DT::datatable(root.nodes(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "leaf.nodes") {
-      DT::datatable(leaf.nodes(dag()))
+      DT::datatable(leaf.nodes(dag()), extensions = 'Responsive')
     } else if (input$netMeasure == "compelled.arcs") {
-      DT::datatable(compelled.arcs(dag()))
+      DT::datatable(compelled.arcs(dag()), extensions = 'Responsive')
     } else {
-      DT::datatable(nnodes(dag()))
+      DT::datatable(nnodes(dag()), extensions = 'Responsive')
     }
   }, options = list(paging = FALSE, searching = FALSE))
-  
-  observe({
-    updateSelectInput(session, "ev", choices = names(data()))
-  })
   
   simData <- reactive({
     simData <- rbn(fit(), input$n)
@@ -296,21 +362,5 @@ shinyServer(function(input, output, session) {
     }
   )
   
-  #   # Perform Bayesian Inference based on evidence and plot results
-  #   output$distPrint <- renderPrint({
-  #     if (is.null(data()))
-  #       return(NULL)
-  #     if (directed(dag())) {
-  #       #         str <- paste(nodes(fit()))
-  #       #         str2 <- paste("(", input$ev, "==", input$val, ")", sep = "")
-  #       #         node.dist <- cpdist(fit(), node = eval(parse(text=str)), evidence = eval(parse(text=str2)), method = input$inf)
-  #       #         node.dist <- as.numeric(node.dist[,1])
-  #       fitted = fit()
-  #       evidence = expression(input$ev == input$val)
-  #       node.dist <- cpdist(fit(), nodes(fit()), evidence, method = input$inf)
-  #     } else
-  #       validate(
-  #         need(try(distPlot != ""), "Make sure your network is completely directed in order to perform Bayesian inference...")
-  #       )
-  #   })
+  
 })
