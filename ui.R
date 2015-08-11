@@ -171,7 +171,6 @@ dashboardPage(skin="black",
                                    box(
                                      title = "Network Paramaters", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                      plotOutput("condPlot")
-# textOutput("expertFit")
                                    )
                             )
                           )

@@ -185,13 +185,7 @@ shinyServer(function(input, output, session) {
   
   # Create data frame for selected paramater
   DF <- reactive({
-    if (!is.null(input$hot)) {
-      DF = hot_to_r(input$hot)
-      hot_table(highlightCol = TRUE, highlightRow = TRUE,
-                allowRowEdit = FALSE, allowColEdit = FALSE) 
-    } else {
-      DF <- as.data.frame(coef(fit()[[input$Node]]))
-    }
+    DF <- data.frame(coef(fit()[[input$Node]]))
     if (is.numeric(data()[,1])) {
       colnames(DF) <- "Param"
       DF <- cbind(Var = rownames(DF), DF)
@@ -202,29 +196,41 @@ shinyServer(function(input, output, session) {
       DF <- transform(DF, Freq = as.numeric(Freq))
     }
   })
-    
-  # Create handsontable of paramaters for selected node
-  output$handsontable1 <- renderRHandsontable({
-      rhandsontable(DF(), rowHeaders = NULL) %>%
-        hot_table(highlightCol = TRUE, highlightRow = TRUE,
-                  allowRowEdit = FALSE, allowColEdit = FALSE)
-  })
   
-  # Add expert knowledge to the model
-  output$expertFit <- renderText({
-    if (!is.null(input$hot)) {
-      if (is.numeric(data()[,1])) {
-        stdev <- expertFit[[input$Node]]["sd"]
-        expertFit[[input$Node]] <- list(coef = c(DF()[,"Param"]), sd = stdev)
-      } else {
-        cpt <- coef(expertFit[[input$Node]])
-        cpt[1:length(DF()[,"Freq"])] <- c(DF()[,"Freq"])
-        expertFit[[input$Node]] <- cpt
-      }
-    } else {
-      expertFit <- fit()
-    }
-  })
+#   # Add expert knowledge to the model
+#   values <- reactiveValues(hot = DF())
+#   expertFit <- reactive({
+#     expertFit <- values[["hot"]]
+#     if (is.numeric(data()[,1])) {
+#       stdev <- as.numeric(fit()[[input$Node]]["sd"])
+#       expertFit <- list(coef = c(expertFit[,"Param"]), sd = stdev)
+#     } else {
+#       cpt <- coef(DF()[[input$Node]])
+#       cpt[1:length(DF()[,"Freq"])] <- c(expertFit[,"Freq"])
+#       expertFit <- cpt
+#     }
+#   })
+#     
+#   # Create handsontable of paramaters for selected node
+#   output$handsontable1 <- renderRHandsontable({
+#     if (is.numeric(data()[,1])) {
+#       col <- "Param"
+#     } else {
+#       col <- "Freq"
+#     }
+#     DT = NULL
+#     if (!is.null(input$hot)) {
+#       DT = hot_to_r(input$hot)
+#       values[["hot"]] = DT
+#     } else if (!is.null(values[["hot"]])) {
+#       DT = values[["hot"]]
+#     }
+#     if (!is.null(DT))
+#     rhandsontable(DT, readOnly = TRUE, rowHeaders = NULL) %>%
+#       hot_table(highlightCol = TRUE, highlightRow = TRUE,
+#                 allowRowEdit = FALSE, allowColEdit = FALSE) %>%
+#       hot_col(col, readOnly = FALSE)
+#   })
   
   # Set the paramater graphic options
   graphic <- reactive({
@@ -361,6 +367,4 @@ shinyServer(function(input, output, session) {
       write.csv(simData(), file)
     }
   )
-  
-  
 })
