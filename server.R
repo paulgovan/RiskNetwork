@@ -184,53 +184,63 @@ shinyServer(function(input, output, session) {
   })
   
   # Create data frame for selected paramater
-  DF <- reactive({
-    DF <- data.frame(coef(fit()[[input$Node]]))
+  param <- reactive({
+    param <- data.frame(coef(fit()[[input$Node]]))
     if (is.numeric(data()[,1])) {
-      colnames(DF) <- "Param"
-      DF <- cbind(Var = rownames(DF), DF)
-      DF[,"Param"] <- round(DF[,"Param"], digits = 3)
-      DF <- transform(DF, Param = as.numeric(Param))
+      colnames(param) <- "Param"
+      param <- cbind(param = rownames(param), param)
+      param[,"Param"] <- round(param[,"Param"], digits = 3)
+      param <- transform(param, Param = as.numeric(Param))
     } else {
-      DF[,"Freq"] <- round(DF[,"Freq"], digits = 3)
-      DF <- transform(DF, Freq = as.numeric(Freq))
+      param[,"Freq"] <- round(param[,"Freq"], digits = 3)
+      param <- transform(param, Freq = as.numeric(Freq))
     }
   })
   
-#   # Add expert knowledge to the model
-#   values <- reactiveValues(hot = DF())
-#   expertFit <- reactive({
-#     expertFit <- values[["hot"]]
-#     if (is.numeric(data()[,1])) {
-#       stdev <- as.numeric(fit()[[input$Node]]["sd"])
-#       expertFit <- list(coef = c(expertFit[,"Param"]), sd = stdev)
-#     } else {
-#       cpt <- coef(DF()[[input$Node]])
-#       cpt[1:length(DF()[,"Freq"])] <- c(expertFit[,"Freq"])
-#       expertFit <- cpt
-#     }
-#   })
-#     
-#   # Create handsontable of paramaters for selected node
-#   output$handsontable1 <- renderRHandsontable({
-#     if (is.numeric(data()[,1])) {
-#       col <- "Param"
-#     } else {
-#       col <- "Freq"
-#     }
-#     DT = NULL
-#     if (!is.null(input$hot)) {
-#       DT = hot_to_r(input$hot)
-#       values[["hot"]] = DT
-#     } else if (!is.null(values[["hot"]])) {
-#       DT = values[["hot"]]
-#     }
-#     if (!is.null(DT))
-#     rhandsontable(DT, readOnly = TRUE, rowHeaders = NULL) %>%
-#       hot_table(highlightCol = TRUE, highlightRow = TRUE,
-#                 allowRowEdit = FALSE, allowColEdit = FALSE) %>%
-#       hot_col(col, readOnly = FALSE)
-#   })
+  # Plot Handsontable for selected parameter
+  output$hot = renderRHandsontable({
+    if (!is.null(input$hot)) {
+      DF = hot_to_r(input$hot)
+    } else {
+      DF = param()
+    }
+    if (is.numeric(data()[,1])) {
+      col <- "Param"
+    } else {
+      col <- "Freq"
+    }
+    setHot(DF)
+    rhandsontable(DF, readOnly = TRUE, rowHeaders = NULL) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE,
+                allowRowEdit = FALSE, allowColEdit = FALSE) %>%
+      hot_col(col, readOnly = FALSE)
+  })
+  
+  # Add expert knowledge to the model
+  values = list()
+  setHot = function(x) values[["hot"]] <<- x
+  
+  # Add expert knowledge to the model
+  expertFit <- reactive({
+    observe({
+      input$saveBtn
+      if (!is.null(values[["hot"]])) {
+        expertFit <- values[["hot"]]
+        if (is.numeric(data()[,1])) {
+          stdev <- as.numeric(fit()[[input$Node]]["sd"])
+          expertFit <- list(coef = c(expertFit[,"Param"]), sd = stdev)
+        } else {
+          cpt <- coef(DF()[[input$Node]])
+          cpt[1:length(DF()[,"Freq"])] <- c(expertFit[,"Freq"])
+          expertFit <- cpt
+        }
+      } else {
+        expertFit <- fit()[[input$Node]]
+      }
+    })
+  })
+  
+  
   
   # Set the paramater graphic options
   graphic <- reactive({
@@ -281,22 +291,22 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "event", choices = names(data()))
   })
   
-#   # Perform Bayesian Inference based on evidence and print results
-#   output$distPrint <- renderPrint({
-#     if (is.null(data()))
-#       return(NULL)
-#     if (directed(dag())) {
-#       fitted = fit()
-#       evidence = as.vector(input$evidence)
-#       value = as.vector(input$val)
-#       node.dist <- cpdist(fitted, input$event, eval(parse(text = paste("(", evidence, "=='",
-#                                                                        sapply(value, as.numeric), "')",
-#                                                                        sep = "", collapse = " & "))), method = input$inf)
-#     } else
-#       validate(
-#         need(try(distPlot != ""), "Make sure your network is completely directed in order to perform Bayesian inference...")
-#       )
-#   })
+  #   # Perform Bayesian Inference based on evidence and print results
+  #   output$distPrint <- renderPrint({
+  #     if (is.null(data()))
+  #       return(NULL)
+  #     if (directed(dag())) {
+  #       fitted = fit()
+  #       evidence = as.vector(input$evidence)
+  #       value = as.vector(input$val)
+  #       node.dist <- cpdist(fitted, input$event, eval(parse(text = paste("(", evidence, "=='",
+  #                                                                        sapply(value, as.numeric), "')",
+  #                                                                        sep = "", collapse = " & "))), method = input$inf)
+  #     } else
+  #       validate(
+  #         need(try(distPlot != ""), "Make sure your network is completely directed in order to perform Bayesian inference...")
+  #       )
+  #   })
   
   observe({
     updateSelectInput(session, "nodeNames", choices = colnames(data()))

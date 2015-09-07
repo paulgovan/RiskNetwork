@@ -15,7 +15,7 @@
 library(shiny)
 library(shinyapps)
 library(shinydashboard)
-library(shinysky)
+# library(shinysky)
 library(networkD3)
 library(rhandsontable)
 
@@ -164,14 +164,14 @@ dashboardPage(skin="black",
                                      selectInput("Node", label = h5("Node:"),
                                                  ""),
                                      helpText("Add expert knowledge to your model (Experimental):"),
-                                     rHandsontableOutput("handsontable1")                                   
+                                     actionButton("saveBtn", "Save"),
+                                     rHandsontableOutput("hot")                                   
                                    )
                             ),
                             column(width = 8,
                                    box(
                                      title = "Network Paramaters", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     plotOutput("condPlot")
-                                   )
+                                     plotOutput("condPlot")                                   )
                             )
                           )
                   ),
