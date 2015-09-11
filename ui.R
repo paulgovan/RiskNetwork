@@ -157,16 +157,18 @@ dashboardPage(skin="black",
                                      title = "Paramater Infographic", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                      helpText("Select a paramater infographic:"),
                                      selectInput("param", label = h5("Paramater Infographic:"),
-                                                 "")
-                                   ),
-                                   box(
-                                     title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
-                                     selectInput("Node", label = h5("Node:"),
                                                  ""),
-                                     helpText("Add expert knowledge to your model (Experimental):"),
-                                     actionButton("saveBtn", "Save"),
-                                     rHandsontableOutput("hot")                                   
+                                     conditionalPanel("input.param == 'barchart' || input.param == 'dotplot'",
+                                     selectInput("Node", label = h5("Node:"), ""))
                                    )
+#                                    box(
+#                                      title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
+#                                      selectInput("Node", label = h5("Node:"),
+#                                                  ""),
+#                                      helpText("Add expert knowledge to your model (Experimental):"),
+#                                      actionButton("saveBtn", "Save"),
+#                                      rHandsontableOutput("hot")                                   
+#                                    )
                             ),
                             column(width = 8,
                                    box(

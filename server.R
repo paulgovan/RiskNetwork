@@ -183,64 +183,62 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  # Create data frame for selected paramater
-  param <- reactive({
-    param <- data.frame(coef(fit()[[input$Node]]))
-    if (is.numeric(data()[,1])) {
-      colnames(param) <- "Param"
-      param <- cbind(param = rownames(param), param)
-      param[,"Param"] <- round(param[,"Param"], digits = 3)
-      param <- transform(param, Param = as.numeric(Param))
-    } else {
-      param[,"Freq"] <- round(param[,"Freq"], digits = 3)
-      param <- transform(param, Freq = as.numeric(Freq))
-    }
-  })
-  
-  # Plot Handsontable for selected parameter
-  output$hot = renderRHandsontable({
-    if (!is.null(input$hot)) {
-      DF = hot_to_r(input$hot)
-    } else {
-      DF = param()
-    }
-    if (is.numeric(data()[,1])) {
-      col <- "Param"
-    } else {
-      col <- "Freq"
-    }
-    setHot(DF)
-    rhandsontable(DF, readOnly = TRUE, rowHeaders = NULL) %>%
-      hot_table(highlightCol = TRUE, highlightRow = TRUE,
-                allowRowEdit = FALSE, allowColEdit = FALSE) %>%
-      hot_col(col, readOnly = FALSE)
-  })
-  
-  # Add expert knowledge to the model
-  values = list()
-  setHot = function(x) values[["hot"]] <<- x
-  
-  # Add expert knowledge to the model
-  expertFit <- reactive({
-    observe({
-      input$saveBtn
-      if (!is.null(values[["hot"]])) {
-        expertFit <- values[["hot"]]
-        if (is.numeric(data()[,1])) {
-          stdev <- as.numeric(fit()[[input$Node]]["sd"])
-          expertFit <- list(coef = c(expertFit[,"Param"]), sd = stdev)
-        } else {
-          cpt <- coef(DF()[[input$Node]])
-          cpt[1:length(DF()[,"Freq"])] <- c(expertFit[,"Freq"])
-          expertFit <- cpt
-        }
-      } else {
-        expertFit <- fit()[[input$Node]]
-      }
-    })
-  })
-  
-  
+#   # Create data frame for selected paramater
+#   param <- reactive({
+#     param <- data.frame(coef(fit()[[input$Node]]))
+#     if (is.numeric(data()[,1])) {
+#       colnames(param) <- "Param"
+#       param <- cbind(param = rownames(param), param)
+#       param[,"Param"] <- round(param[,"Param"], digits = 3)
+#       param <- transform(param, Param = as.numeric(Param))
+#     } else {
+#       param[,"Freq"] <- round(param[,"Freq"], digits = 3)
+#       param <- transform(param, Freq = as.numeric(Freq))
+#     }
+#   })
+#   
+#   # Plot Handsontable for selected parameter
+#   output$hot = renderRHandsontable({
+#     if (!is.null(input$hot)) {
+#       DF = hot_to_r(input$hot)
+#     } else {
+#       DF = param()
+#     }
+#     if (is.numeric(data()[,1])) {
+#       col <- "Param"
+#     } else {
+#       col <- "Freq"
+#     }
+#     setHot(DF)
+#     rhandsontable(DF, readOnly = TRUE, rowHeaders = NULL) %>%
+#       hot_table(highlightCol = TRUE, highlightRow = TRUE,
+#                 allowRowEdit = FALSE, allowColEdit = FALSE) %>%
+#       hot_col(col, readOnly = FALSE)
+#   })
+#   
+#   # Add expert knowledge to the model
+#   values = list()
+#   setHot = function(x) values[["hot"]] <<- x
+#   
+#   # Add expert knowledge to the model
+#   expertFit <- reactive({
+#     observe({
+#       input$saveBtn
+#       if (!is.null(values[["hot"]])) {
+#         expertFit <- values[["hot"]]
+#         if (is.numeric(data()[,1])) {
+#           stdev <- as.numeric(fit()[[input$Node]]["sd"])
+#           expertFit <- list(coef = c(expertFit[,"Param"]), sd = stdev)
+#         } else {
+#           cpt <- coef(DF()[[input$Node]])
+#           cpt[1:length(DF()[,"Freq"])] <- c(expertFit[,"Freq"])
+#           expertFit <- cpt
+#         }
+#       } else {
+#         expertFit <- fit()[[input$Node]]
+#       }
+#     })
+#   })
   
   # Set the paramater graphic options
   graphic <- reactive({
