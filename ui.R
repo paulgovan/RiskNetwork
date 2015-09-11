@@ -13,7 +13,7 @@
 # limitations under the License.
 
 library(shiny)
-library(shinyapps)
+# library(shinyapps)
 library(shinydashboard)
 # library(shinysky)
 library(networkD3)
