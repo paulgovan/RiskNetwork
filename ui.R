@@ -13,11 +13,11 @@
 # limitations under the License.
 
 library(shiny)
-# library(shinyapps)
+library(shinyapps)
 library(shinydashboard)
-# library(shinysky)
 library(networkD3)
 library(rhandsontable)
+library(d3heatmap)
 
 dashboardPage(skin="black",
               dashboardHeader(title = "RiskNetwork",
@@ -30,12 +30,12 @@ dashboardPage(skin="black",
               dashboardSidebar(
                 sidebarMenu(
                   menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                  menuItem("Structure", icon = icon("globe"), tabName = "structure",
-                           badgeLabel = "New", badgeColor = "green"),
+                  menuItem("Structure", icon = icon("globe"), tabName = "structure"),
                   menuItem("Parameters", tabName = "paramaters", icon = icon("bar-chart")),
                   menuItem("Inference", icon = icon("arrow-right"), tabName = "inference",
                            badgeLabel = "Coming Soon", badgeColor = "yellow"),
-                  menuItem("Measures", tabName = "measures", icon = icon("table")),
+                  menuItem("Measures", tabName = "measures", icon = icon("table"),
+                           badgeLabel = "New", badgeColor = "green"),
                   menuItem("Simulation", tabName = "simulation", icon = icon("random"))
                   
                 )),
@@ -51,12 +51,12 @@ dashboardPage(skin="black",
                               h3("Welcome to RiskNetwork!"),
                               h4("RiskNetwork is a ",
                                  a(href = 'http://shiny.rstudio.com', 'Shiny'),
-                                "web application for risk network modeling and analysis, powered by",
+                                 "web application for risk network modeling and analysis, powered by",
                                  a(href = 'http://www.bnlearn.com', 'bnlearn'),
                                  'and',
                                  a(href = 'http://christophergandrud.github.io/networkD3/', 'networkD3')),
                               h4("Click", em("Structure"), " in the sidepanel to get started"),
-                                 
+                              
                               h4('Copyright 2015 By Paul Govan. ',
                                  a(href = 'http://www.apache.org/licenses/LICENSE-2.0', 'Terms of Use.'))
                             ),
@@ -142,134 +142,129 @@ dashboardPage(skin="black",
                             )
                           )
                   ),
-                  tabItem(tabName = "paramaters",
-                          fluidRow(
-                            column(width = 4,
-                                   box(
-                                     title = "Paramater Learning", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     helpText("Select a parameter learning method:"),
-                                     selectInput("met", h5("Learning Method:"), 
-                                                 c("Maximum Likelihood Estimation"="mle",
-                                                   "Bayesian Estimation"="bayes"
-                                                 ))
-                                   ),
-                                   box(
-                                     title = "Paramater Infographic", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     helpText("Select a paramater infographic:"),
-                                     selectInput("param", label = h5("Paramater Infographic:"),
-                                                 ""),
-                                     conditionalPanel("input.param == 'barchart' || input.param == 'dotplot'",
-                                     selectInput("Node", label = h5("Node:"), ""))
-                                   )
-#                                    box(
-#                                      title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
-#                                      selectInput("Node", label = h5("Node:"),
-#                                                  ""),
-#                                      helpText("Add expert knowledge to your model (Experimental):"),
-#                                      actionButton("saveBtn", "Save"),
-#                                      rHandsontableOutput("hot")                                   
-#                                    )
-                            ),
-                            column(width = 8,
-                                   box(
-                                     title = "Network Paramaters", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     plotOutput("condPlot")                                   )
-                            )
-                          )
-                  ),
-#                   tabItem(tabName = "inference",
-#                           fluidRow(
-#                             column(width = 4,
-#                                    box(
-#                                      title = "Inference Method", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-#                                      helpText("Select an inference method:"),
-#                                      selectInput("inf", h5("Inference Method:"), 
-#                                                  c("logic sampling"="ls",
-#                                                    "likelihood weighting"="lw"
-#                                                  ))
-#                                    ),
-#                                    box(
-#                                      title = "Evidence", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-#                                      fluidRow(
-#                                        column(6,
-#                                               selectInput("evidence", label = h5("Evidence Node:"),
-#                                                           "")
-#                                        ),
-#                                        column(6,
-#                                               numericInput("val", label = h5("Evidence:"), value = 1)
-#                                        )
-#                                      )
-#                                    ),
-#                                    box(
-#                                      title = "Event", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-#                                      selectInput("event", label = h5("Event Node:"),
-#                                                  "")                              
-#                                    )
-#                             ),
-#                             column(width = 8,
-#                                    box(
-#                                      title = "Event Paramater", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-#                                      textOutput("distPrint")
-#                                    )
-#                             )
-#                           )
-#                   ),
-                  tabItem(tabName = "measures",
-                          fluidRow(
-                            box(
-                              title = "Node Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
-                              helpText("Select a node measure:"),
-                              selectInput("nodeMeasure", h5("Node Measure:"), 
-                                          c("Markov Blanket"="mb",
-                                            "Neighborhood"="nbr",
-                                            "Parents"="parents",
-                                            "Children"="children", 
-                                            "In Degree"="in.degree",
-                                            "Out Degree"="out.degree",
-                                            "Incident Arcs"="incident.arcs",
-                                            "Incoming Arcs"="incoming.arcs",
-                                            "Outgoing Arcs"="outgoing.arcs"
-                                          )),
-                              selectInput("nodeNames", label = h5("Node:"),
-                                          "")
-                            ),
-                            box(
-                              title = "Node Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
-                              verbatimTextOutput("nodeText")
-                            )
+                tabItem(tabName = "paramaters",
+                        fluidRow(
+                          column(width = 4,
+                                 box(
+                                   title = "Paramater Learning", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                                   helpText("Select a parameter learning method:"),
+                                   selectInput("met", h5("Learning Method:"), 
+                                               c("Maximum Likelihood Estimation"="mle",
+                                                 "Bayesian Estimation"="bayes"
+                                               ))
+                                 ),
+                                 box(
+                                   title = "Paramater Infographic", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                                   helpText("Select a paramater infographic:"),
+                                   selectInput("param", label = h5("Paramater Infographic:"),
+                                               "")
+                                 ),
+                                 box(
+                                   title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
+                                   selectInput("Node", label = h5("Node:"),
+                                               ""),
+                                   helpText("Add expert knowledge to your model (Experimental):"),
+                                   actionButton("saveBtn", "Save"),
+                                   rHandsontableOutput("hot")                                   
+                                 )
                           ),
-                          fluidRow(
-                            box(
-                              title = "Network Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
-                              helpText("Select a network measure:"),
-                              selectInput("netMeasure", h5("Network Measure:"), 
-                                          c("Adjacency Matrix"="amat",
-                                            "Arcs"="arcs",
-                                            "Directed Arcs"="directed.arcs",
-                                            "Undirected Arcs"="undirected.arcs",
-                                            "Root Nodes"="root.nodes",
-                                            "Leaf Nodes"="leaf.nodes",
-                                            "Compelled Arcs"="compelled.arcs"
-                                          ))
-                            ),
-                            box(
-                              title = "Network Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
-                              DT::dataTableOutput("netTable")
-                            )
+                          column(width = 8,
+                                 box(
+                                   title = "Network Paramaters", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                                   plotOutput("condPlot")                                   )
                           )
-                  ),
-                  tabItem(tabName = "simulation",
-                          fluidRow(
-                            column(width = 4,
-                                   box(
-                                     title = "Network Simulation", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     helpText("Simulate random data from your network and download for future use:"),
-                                     numericInput("n", label = h5("N (Sample Size):"), value = 100, min = 0),
-                                     downloadButton('downloadData', 'Download')
-                                   )
-                            )
+                        )
+                ),
+                #                   tabItem(tabName = "inference",
+                #                           fluidRow(
+                #                             column(width = 4,
+                #                                    box(
+                #                                      title = "Inference Method", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                #                                      helpText("Select an inference method:"),
+                #                                      selectInput("inf", h5("Inference Method:"), 
+                #                                                  c("logic sampling"="ls",
+                #                                                    "likelihood weighting"="lw"
+                #                                                  ))
+                #                                    ),
+                #                                    box(
+                #                                      title = "Evidence", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                #                                      fluidRow(
+                #                                        column(6,
+                #                                               selectInput("evidence", label = h5("Evidence Node:"),
+                #                                                           "")
+                #                                        ),
+                #                                        column(6,
+                #                                               numericInput("val", label = h5("Evidence:"), value = 1)
+                #                                        )
+                #                                      )
+                #                                    ),
+                #                                    box(
+                #                                      title = "Event", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                #                                      selectInput("event", label = h5("Event Node:"),
+                #                                                  "")                              
+                #                                    )
+                #                             ),
+                #                             column(width = 8,
+                #                                    box(
+                #                                      title = "Event Paramater", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                #                                      textOutput("distPrint")
+                #                                    )
+                #                             )
+                #                           )
+                #                   ),
+                tabItem(tabName = "measures",
+                        fluidRow(
+                          box(
+                            title = "Node Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
+                            helpText("Select a node measure:"),
+                            selectInput("nodeMeasure", h5("Node Measure:"), 
+                                        c("Markov Blanket"="mb",
+                                          "Neighborhood"="nbr",
+                                          "Parents"="parents",
+                                          "Children"="children", 
+                                          "In Degree"="in.degree",
+                                          "Out Degree"="out.degree",
+                                          "Incident Arcs"="incident.arcs",
+                                          "Incoming Arcs"="incoming.arcs",
+                                          "Outgoing Arcs"="outgoing.arcs"
+                                        )),
+                            selectInput("nodeNames", label = h5("Node:"),
+                                        "")
+                          ),
+                          box(
+                            title = "Node Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
+                            verbatimTextOutput("nodeText")
                           )
-                  )
+                        ),
+                        fluidRow(
+                          box(
+                            title = "Network Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
+                            helpText("Select a network measure:"),
+                            selectInput("dendrogram", h5("Dendrogram:"), 
+                                        c("Both"="both",
+                                          "Row"="row",
+                                          "Column"="column",
+                                          "None"="none"
+                                        ))
+                          ),
+                          box(
+                            title = "Network Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
+                            d3heatmapOutput("netTable")
+                          )
+                        )
+                ),
+                tabItem(tabName = "simulation",
+                        fluidRow(
+                          column(width = 4,
+                                 box(
+                                   title = "Network Simulation", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
+                                   helpText("Simulate random data from your network and download for future use:"),
+                                   numericInput("n", label = h5("N (Sample Size):"), value = 100, min = 0),
+                                   downloadButton('downloadData', 'Download')
+                                 )
+                          )
+                        )
                 )
               )
+)
 )
