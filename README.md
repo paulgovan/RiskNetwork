@@ -15,7 +15,7 @@ RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk netw
 You can run RiskNetwork in [R](https://www.r-project.org) with:
 
 ```S
-require(shiny)
+install.packages("shiny")
 runGitHub('paulgovan/risknetwork')
 ```
 
