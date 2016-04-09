@@ -1,6 +1,8 @@
 # RiskNetwork
 Risk network modeling and analysis
 
+![RiskNetwork](https://github.com/paulgovan/RiskNetwork/blob/master/images/RiskNetwork%20Structure%20Tab.png?raw=true)
+
 # Features
 * Create interactive risk network models in the cloud
 * Learn the structure of your network with powerful structural learning algorithms
