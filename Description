@@ -1,5 +1,18 @@
-Title: RiskNetwork
+Package: RiskNetwork
+Type: Package
+Title: Risk Network modeling and analysis
+Version: 0.1.0
 Author: Paul Govan
-AuthorUrl: http://github.com/paulgovan/RiskNetwork/
-License: Apache
-Type: Shiny
+Maintainer: Paul Govan <pgovan1@aggienetwork.com>
+Description: RiskNetwork is a Shiny web application for risk network modeling and analysis.
+License: MIT
+LazyData: TRUE
+Imports:
+    shiny (>= 0.13),
+    bnlearn (>= 4.0),
+    lattice (>= 0.2),
+    networkD3 (>= 0.2.10),
+    rhandsontable (>= 0.3.1),
+    d3heatmap (>= 0.6.1),
+    shinydashboard (>= 0.5.1)
+RoxygenNote: 5.0.1
