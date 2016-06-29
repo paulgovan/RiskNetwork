@@ -38,9 +38,15 @@
 <h1>
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h1>
 
-<p>To run RiskNetwork in <a href="https://www.r-project.org">R</a>:</p>
+<p>To install RiskNetwork in <a href="https://www.r-project.org">R</a>:</p>
 
-<div class="highlight highlight-source-assembly"><pre><span class="pl-en">shiny::runGitHub(</span><span class="pl-s">'paulgovan/risknetwork'</span><span class="pl-en">)</span></pre></div>
+<pre><code>devtools::install_github('paulgovan/RiskNetwork')
+</code></pre>
+
+<p>To launch the app:</p>
+
+<pre><code>RiskNetwork()
+</code></pre>
 
 <p>Or to access the app through a browser, visit <a href="https://paulgovan.shinyapps.io/risknetwork">paulgovan.shinyapps.io/RiskNetwork</a>. </p>
 
@@ -54,7 +60,7 @@
 
 <p>RiskNetwork comes with a number of simulated and "real world" data sets. This example will use the "Sample Discrete Network", which is the selected network by default.</p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/images/Dashboard.PNG?raw=true" alt="Dashboard"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Dashboard.PNG?raw=true" alt="Dashboard"></p>
 
 <h2>
 <a id="structure" class="anchor" href="#structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structure</h2>
@@ -76,7 +82,7 @@
 
 <p>To view the network score, select a score function from the The <em>Network Score</em> box. </p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/images/Structure.PNG?raw=true" alt="Structure"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Structure.PNG?raw=true" alt="Structure"></p>
 
 <p>"Sample Discrete Network" contains six discrete variables, stored as factors with either 2 or 3 levels. The structure of this simple Bayesian network can be learned using the grow-shrink algorithm, which is the selected algorithm by default.</p>
 
@@ -93,7 +99,7 @@
 
 <p>Then select the type of chart to display in the <em>Paramter Infographic</em> box and, for the discrete case, choose your preferred node. </p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/images/Parameters.PNG?raw=true" alt="Parameters"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Parameters.PNG?raw=true" alt="Parameters"></p>
 
 <p>For example, the selected node <em>A</em> is a discrete node with three levels: <em>a</em>, <em>b</em>, and <em>c</em>.</p>
 
@@ -120,7 +126,7 @@
 
 <p>The <em>Network Control</em> box contains different options for hierarchical clustering of the network. Select the type of dendogram to display (row, column, both, or none) and the resulting dendogram(s) will be displayed along with the adjacency matrix in the <em>Network Measure</em> box.</p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/images/Measures.PNG?raw=true" alt="Measures"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Measures.PNG?raw=true" alt="Measures"></p>
 
 <h2>
 <a id="simulation" class="anchor" href="#simulation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simulation</h2>
@@ -129,7 +135,7 @@
 
 <p>Simply enter the sample size <em>N</em> in the <em>Network Simulation</em> box and click <em>Download</em> in order to download a random sample of data from the Bayesian network. </p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/images/Simulation.PNG?raw=true" alt="Simulation"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Simulation.PNG?raw=true" alt="Simulation"></p>
 
 <h2>
 <a id="future-work" class="anchor" href="#future-work" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Future Work</h2>
