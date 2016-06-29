@@ -35,7 +35,7 @@ shinyServer(function(input, output, session) {
       data <- insurance
     } else if (input$net == 4) {
       data <- matrix(NA, ncol = 14)
-      colnames(data) <- c("C-1", "C-2", "R-1", "R-2", "Q-1", "U-1", "Q-2", "U-2", "Q-3", "U-3", "T-1", "T-2", "T-3", "P")
+      colnames(data) <- c("Cause-Delays on other project", "Cause-Install scheduled during hurricane season", "Risk-vessel delayed on other project", "Risk-Inclement weather", "Resource-Transport vessel rate", "Resource-2 transport vessels", "Resource-1 install vessel", "Resource-Install vessel rate", "Resource-25 HUC personnel", "Resource-HUC personnel rate", "Task-Jacket, topsides, pile tow", "Task-Offshore install", "Task-HUC", "Project-Platform install")
       data
     } else  {  
       # Get uploaded file
@@ -52,8 +52,8 @@ shinyServer(function(input, output, session) {
     if (is.null(data()))
       return(NULL)
     if (input$net == 4) {
-      dag <- model2network("[C-1][C-2][R-1|C-1][R-2|C-2][Q-1|R-1][U-1|R-2][Q-2][U-2|R-2][Q-3][U-3][T-1|U-1:Q-1][T-2|U-1:Q-1:U-2:Q-2][T-3|U-3:Q-3][P|T-1:T-2:T-3]")
-    } else if (input$alg == "gs") {
+      dag <- model2network("[Cause-Delays on other project][Cause-Install scheduled during hurricane season][Risk-vessel delayed on other project|Cause-Delays on other project][Risk-Inclement weather|Cause-Install scheduled during hurricane season][Resource-Transport vessel rate][Resource-2 transport vessels|Risk-Inclement weather][Resource-1 install vessel|Risk-Inclement weather][Resource-Install vessel rate|Risk-vessel delayed on other project][Resource-25 HUC personnel][Resource-HUC personnel rate][Task-Jacket, topsides, pile tow|Resource-Transport vessel rate:Resource-2 transport vessels][Task-Offshore install|Resource-Transport vessel rate:Resource-2 transport vessels:Resource-Install vessel rate:Resource-1 install vessel][Task-HUC|Resource-HUC personnel rate:Resource-25 HUC personnel][Project-Platform install|Task-Jacket, topsides, pile tow:Task-Offshore install:Task-HUC]")
+      } else if (input$alg == "gs") {
       dag <- cextend(gs(data()), strict=FALSE)
     } else if (input$alg == "iamb") {
       dag <- cextend(iamb(data()), strict=FALSE)
@@ -147,38 +147,38 @@ shinyServer(function(input, output, session) {
       cptC1 <- matrix(c(0.75, 0.25), ncol=2, dimnames=list(NULL, tf))
       cptC2 <- matrix(c(0.5, 0.5), ncol=2, dimnames=list(NULL, tf))
       cptR1 <- matrix(c(0.95, 0.05, 0.25, 0.75), 
-                      ncol=2, dimnames=list("R-1"=tf, "C-1"=tf))
+                      ncol=2, dimnames=list("Risk-vessel delayed on other project"=tf, "Cause-Delays on other project"=tf))
       cptR2 <- matrix(c(0.75, 0.25, 0.4, 0.6), 
-                      ncol=2, dimnames=list("R-2"=tf, "C-2"=tf))
+                      ncol=2, dimnames=list("Risk-Inclement weather"=tf, "Cause-Install scheduled during hurricane season"=tf))
       lh <- c("Low", "High")
       cptQ1 <- matrix(c(0.1, 0.9, 0.5, 0.5), 
-                      ncol=2, dimnames=list("Q-1"=lh, "R-1"=tf))
-      cptU1 <- matrix(c(0.2, 0.8, 0.4, 0.6), 
-                      ncol=2, dimnames=list("U-1"=lh, "R-2"=tf))
-      cptQ2 <- matrix(c(0.5, 0.5), 
+                      ncol=2, dimnames=list("Resource-2 transport vessels"=lh, "Risk-Inclement weather"=tf))
+      cptU1 <- matrix(c(0.5, 0.5), 
                       ncol=2, dimnames=list(NULL, lh))
+      cptQ2 <- matrix(c(0.1, 0.9, 0.5, 0.5), 
+                      ncol=2, dimnames=list("Resource-1 install vessel"=lh, "Risk-Inclement weather"=tf))
       cptU2 <- matrix(c(0.1, 0.9, 0.8, 0.2), 
-                      ncol=2, dimnames=list("U-2"=lh, "R-2"=tf))
+                      ncol=2, dimnames=list("Resource-Install vessel rate"=lh, "Risk-vessel delayed on other project"=tf))
       cptQ3 <- matrix(c(0.7, 0.3), 
                       ncol=2, dimnames=list(NULL, lh))
       cptU3 <- matrix(c(0.3, 0.7), 
                       ncol=2, dimnames=list(NULL, lh))
       cptT1 <- c(1.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, 1.0)
       dim(cptT1) <- c(2, 2, 2)
-      dimnames(cptT1) <- list("T-1"=lh, "Q-1"=lh, "U-1"=lh)
+      dimnames(cptT1) <- list("Task-Jacket, topsides, pile tow"=lh, "Resource-2 transport vessels"=lh, "Resource-Transport vessel rate"=lh)
       cptT2 <- c(1.0, 0.0, 0.75, 0.25, 0.75, 0.25, 0.5, 0.5, 0.75, 0.25, 0.5, 0.5, 0.5, 0.5, 0.25, 0.75, 0.75, 0.25, 0.5, 0.5, 0.5, 0.5, 0.25, 0.75, 0.5, 0.5, 0.25, 0.75, 0.25, 0.75, 0.0, 1.0)
       dim(cptT2) <- c(2, 2, 2, 2, 2)
-      dimnames(cptT2) <- list("T-2"=lh, "Q-1"=lh, "U-1"=lh, "Q-2"=lh, "U-2"=lh)
+      dimnames(cptT2) <- list("Task-Offshore install"=lh, "Resource-2 transport vessels"=lh, "Resource-Transport vessel rate"=lh, "Resource-1 install vessel"=lh, "Resource-Install vessel rate"=lh)
       cptT3 <- c(1.0, 0.0, 1.0, 0.0, 0.5, 0.5, 0.0, 1.0)
       dim(cptT3) <- c(2, 2, 2)
-      dimnames(cptT3) <- list("T-3"=lh, "Q-3"=lh, "U-3"=lh)
+      dimnames(cptT3) <- list("Task-HUC"=lh, "Resource-25 HUC personnel"=lh, "Resource-HUC personnel rate"=lh)
       cptP <- c(1.0, 0.0, 0.67, 0.33, 0.67, 0.33, 0.33, 0.67, 0.67, 0.33, 0.33, 0.67, 0.33, 0.67, 0.0, 1.0)
       dim(cptP) <- c(2, 2, 2, 2)
-      dimnames(cptP) <- list("P"=lh, "T-1"=lh, "T-2"=lh, "T-3"=lh)
-      fit <- custom.fit(dag(), dist=list("C-1"=cptC1, "C-2"=cptC2, "R-1"=cptR1, "R-2"=cptR2, 
-                                         "Q-1"=cptQ1, "U-1"=cptU1, "Q-2"=cptQ2, "U-2"=cptU2,
-                                         "Q-3"=cptQ3, "U-3"=cptU3,"T-1"=cptT1, "T-2"=cptT2,
-                                         "T-3"=cptT3, "P"=cptP))
+      dimnames(cptP) <- list("Project-Platform install"=lh, "Task-Jacket, topsides, pile tow"=lh, "Task-Offshore install"=lh, "Task-HUC"=lh)
+      fit <- custom.fit(dag(), dist=list("Cause-Delays on other project"=cptC1, "Cause-Install scheduled during hurricane season"=cptC2, "Risk-vessel delayed on other project"=cptR1, "Risk-Inclement weather"=cptR2, 
+                                         "Resource-2 transport vessels"=cptQ1, "Resource-Transport vessel rate"=cptU1, "Resource-1 install vessel"=cptQ2, "Resource-Install vessel rate"=cptU2,
+                                         "Resource-25 HUC personnel"=cptQ3, "Resource-HUC personnel rate"=cptU3,"Task-Jacket, topsides, pile tow"=cptT1, "Task-Offshore install"=cptT2,
+                                         "Task-HUC"=cptT3, "Project-Platform install"=cptP))
     } else if (directed(dag())) {
       fit <- bn.fit(dag(), data(), method = input$met)
     }

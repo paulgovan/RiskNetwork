@@ -150,22 +150,25 @@ dashboardPage(skin="black",
                                    selectInput("met", h5("Learning Method:"), 
                                                c("Maximum Likelihood Estimation"="mle",
                                                  "Bayesian Estimation"="bayes"
-                                               ))
+                                               )), 
+                                   helpText("Select a parameter node:"),
+                                   selectInput("Node", label = h5("Node:"),
+                                               "")
                                  ),
                                  box(
                                    title = "Paramater Infographic", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                    helpText("Select a paramater infographic:"),
                                    selectInput("param", label = h5("Paramater Infographic:"),
                                                "")
-                                 ),
-                                 box(
-                                   title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
-                                   selectInput("Node", label = h5("Node:"),
-                                               ""),
-                                   helpText("Add expert knowledge to your model (Experimental):"),
-                                   actionButton("saveBtn", "Save"),
-                                   rHandsontableOutput("hot")                                   
                                  )
+#                                  box(
+#                                    title = "Expert Knowledge", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL, height = 1000,
+#                                    selectInput("Node", label = h5("Node:"),
+#                                                ""),
+#                                    helpText("Add expert knowledge to your model (Experimental):"),
+#                                    actionButton("saveBtn", "Save"),
+#                                    rHandsontableOutput("hot")                                   
+#                                  )
                           ),
                           column(width = 8,
                                  box(
