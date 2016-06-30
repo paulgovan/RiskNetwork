@@ -36,7 +36,7 @@ dashboardPage(skin="black",
                   menuItem("Measures", tabName = "measures", icon = icon("table"),
                            badgeLabel = "New", badgeColor = "green"),
                   menuItem("Simulation", tabName = "simulation", icon = icon("random"))
-                  
+
                 )),
               dashboardBody(
                 tags$head(tags$link(rel = "icon", type = "image/png", href = "favicon.png"),
@@ -55,7 +55,7 @@ dashboardPage(skin="black",
                                  'and',
                                  a(href = 'http://christophergandrud.github.io/networkD3/', 'networkD3')),
                               h4("Click", em("Structure"), " in the sidepanel to get started"),
-                              
+
                               h4('Copyright 2015 By Paul Govan. ',
                                  a(href = 'http://www.apache.org/licenses/LICENSE-2.0', 'Terms of Use.'))
                             ),
@@ -69,7 +69,7 @@ dashboardPage(skin="black",
                                    box(
                                      title = "Network Input", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                      helpText("Select a sample network or upload your risk network data:"),
-                                     selectInput("net", h5("Risk Network:"), 
+                                     selectInput("net", h5("Risk Network:"),
                                                  c("Sample Discrete Network"=1,
                                                    "Sample Gaussian Network"= 2,
                                                    "Sample Insurance Network"=3,
@@ -100,7 +100,7 @@ dashboardPage(skin="black",
                                                     box(
                                                       title = "Structural Learning", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                                       helpText("Select a structural learning algorithm:"),
-                                                      selectizeInput("alg", h5("Learning Algorithm:"), 
+                                                      selectizeInput("alg", h5("Learning Algorithm:"),
                                                                      choices = list("Constraint-based Learning"=
                                                                                       c("Grow-Shrink"="gs",
                                                                                         "Incremental Association"="iamb",
@@ -115,7 +115,7 @@ dashboardPage(skin="black",
                                                                                     "Local Discovery Learning"=
                                                                                       c("Max-Min Parents and Children"='mmpc',
                                                                                         "Semi-Interleaved HITON-PC"="si.hiton.pc",
-                                                                                        "ARACNE"="aracne", 
+                                                                                        "ARACNE"="aracne",
                                                                                         "Chow-Liu"="chow.liu"))
                                                       )
                                                     )
@@ -136,7 +136,7 @@ dashboardPage(skin="black",
                             column(width = 8,
                                    box(
                                      title = "Risk Network", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
-                                     simpleNetworkOutput("netPlot")
+                                     networkD3::simpleNetworkOutput("netPlot")
                                    )
                             )
                           )
@@ -147,10 +147,10 @@ dashboardPage(skin="black",
                                  box(
                                    title = "Paramater Learning", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                                    helpText("Select a parameter learning method:"),
-                                   selectInput("met", h5("Learning Method:"), 
+                                   selectInput("met", h5("Learning Method:"),
                                                c("Maximum Likelihood Estimation"="mle",
                                                  "Bayesian Estimation"="bayes"
-                                               )), 
+                                               )),
                                    helpText("Select a parameter node:"),
                                    selectInput("Node", label = h5("Node:"),
                                                "")
@@ -167,7 +167,7 @@ dashboardPage(skin="black",
 #                                                ""),
 #                                    helpText("Add expert knowledge to your model (Experimental):"),
 #                                    actionButton("saveBtn", "Save"),
-#                                    rHandsontableOutput("hot")                                   
+#                                    rhandsontable::rHandsontableOutput("hot")
 #                                  )
                           ),
                           column(width = 8,
@@ -183,7 +183,7 @@ dashboardPage(skin="black",
                 #                                    box(
                 #                                      title = "Inference Method", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                 #                                      helpText("Select an inference method:"),
-                #                                      selectInput("inf", h5("Inference Method:"), 
+                #                                      selectInput("inf", h5("Inference Method:"),
                 #                                                  c("logic sampling"="ls",
                 #                                                    "likelihood weighting"="lw"
                 #                                                  ))
@@ -203,7 +203,7 @@ dashboardPage(skin="black",
                 #                                    box(
                 #                                      title = "Event", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = NULL,
                 #                                      selectInput("event", label = h5("Event Node:"),
-                #                                                  "")                              
+                #                                                  "")
                 #                                    )
                 #                             ),
                 #                             column(width = 8,
@@ -219,11 +219,11 @@ dashboardPage(skin="black",
                           box(
                             title = "Node Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
                             helpText("Select a node measure:"),
-                            selectInput("nodeMeasure", h5("Node Measure:"), 
+                            selectInput("nodeMeasure", h5("Node Measure:"),
                                         c("Markov Blanket"="mb",
                                           "Neighborhood"="nbr",
                                           "Parents"="parents",
-                                          "Children"="children", 
+                                          "Children"="children",
                                           "In Degree"="in.degree",
                                           "Out Degree"="out.degree",
                                           "Incident Arcs"="incident.arcs",
@@ -242,7 +242,7 @@ dashboardPage(skin="black",
                           box(
                             title = "Network Control", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 4,
                             helpText("Select a network measure:"),
-                            selectInput("dendrogram", h5("Dendrogram:"), 
+                            selectInput("dendrogram", h5("Dendrogram:"),
                                         c("Both"="both",
                                           "Row"="row",
                                           "Column"="column",
@@ -251,7 +251,7 @@ dashboardPage(skin="black",
                           ),
                           box(
                             title = "Network Measure", status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 8,
-                            d3heatmapOutput("netTable")
+                            d3heatmap::d3heatmapOutput("netTable")
                           )
                         )
                 ),
