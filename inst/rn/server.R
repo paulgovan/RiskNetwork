@@ -95,7 +95,7 @@ shinyServer(function(input, output, session) {
   output$score <- renderText({
     if (is.null(data()) | input$net == 4)
       return(NULL)
-    if (networkD3::directed(dag())) {
+    if (bnlearn::directed(dag())) {
       if (is.numeric(data()[,1])) {
         if (input$type == "loglik") {
           bnlearn::score(dag(), data(), type="loglik-g")
