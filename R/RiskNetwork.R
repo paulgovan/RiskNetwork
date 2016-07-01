@@ -4,6 +4,7 @@
 #' analysis.
 #' @import shiny
 #' @import shinydashboard
+#' @import bnlearn
 #' @export
 RiskNetwork <- function() {
   shiny::runApp(system.file('rn', package='RiskNetwork'))
