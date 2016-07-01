@@ -4,6 +4,8 @@ options(shiny.maxRequestSize = 10*1024^2)
 
 # Load data
 data(learning.test, package = "bnlearn")
+data(gaussian.test, package = "bnlearn")
+data(insurance, package = "bnlearn")
 
 #' @import bnlearn
 # Define required server logic
