@@ -2,6 +2,9 @@
 # setting this option. Here we'll raise limit to 9MB.
 options(shiny.maxRequestSize = 10*1024^2)
 
+# Load data
+data(learning.test, package = "bnlearn")
+
 #' @import bnlearn
 # Define required server logic
 shinyServer(function(input, output, session) {
