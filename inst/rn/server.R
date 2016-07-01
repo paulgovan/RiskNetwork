@@ -2,17 +2,18 @@
 # setting this option. Here we'll raise limit to 9MB.
 options(shiny.maxRequestSize = 10*1024^2)
 
+#' @import bnlearn
 # Define required server logic
 shinyServer(function(input, output, session) {
 
   # Get data
   data <- reactive({
     if (input$net == 1) {
-      data <- data(learning.test)
+      data <- learning.test
     } else if (input$net == 2) {
-      data <- data(gaussian.test)
+      data <- gaussian.test
     } else if (input$net == 3) {
-      data <- data(insurance)
+      data <- insurance
     } else if (input$net == 4) {
       data <- matrix(NA, ncol = 14)
       colnames(data) <- c("Cause-Delays on other project", "Cause-Install scheduled during hurricane season", "Risk-vessel delayed on other project", "Risk-Inclement weather", "Resource-Transport vessel rate", "Resource-2 transport vessels", "Resource-1 install vessel", "Resource-Install vessel rate", "Resource-25 HUC personnel", "Resource-HUC personnel rate", "Task-Jacket, topsides, pile tow", "Task-Offshore install", "Task-HUC", "Project-Platform install")
@@ -34,29 +35,29 @@ shinyServer(function(input, output, session) {
     if (input$net == 4) {
       dag <- bnlearn::model2network("[Cause-Delays on other project][Cause-Install scheduled during hurricane season][Risk-vessel delayed on other project|Cause-Delays on other project][Risk-Inclement weather|Cause-Install scheduled during hurricane season][Resource-Transport vessel rate][Resource-2 transport vessels|Risk-Inclement weather][Resource-1 install vessel|Risk-Inclement weather][Resource-Install vessel rate|Risk-vessel delayed on other project][Resource-25 HUC personnel][Resource-HUC personnel rate][Task-Jacket, topsides, pile tow|Resource-Transport vessel rate:Resource-2 transport vessels][Task-Offshore install|Resource-Transport vessel rate:Resource-2 transport vessels:Resource-Install vessel rate:Resource-1 install vessel][Task-HUC|Resource-HUC personnel rate:Resource-25 HUC personnel][Project-Platform install|Task-Jacket, topsides, pile tow:Task-Offshore install:Task-HUC]")
       } else if (input$alg == "gs") {
-      dag <- bnlearn::cextend(gs(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::gs(data()), strict=FALSE)
     } else if (input$alg == "iamb") {
-      dag <- bnlearn::cextend(iamb(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::iamb(data()), strict=FALSE)
     } else if (input$alg == "fast.iamb") {
-      dag <- bnlearn::cextend(fast.iamb(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::fast.iamb(data()), strict=FALSE)
     } else if (input$alg == "inter.iamb") {
-      dag <- bnlearn::cextend(inter.iamb(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::inter.iamb(data()), strict=FALSE)
     } else if (input$alg == "hc") {
-      dag <- bnlearn::cextend(hc(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::hc(data()), strict=FALSE)
     } else if (input$alg == "tamu") {
-      dag <- bnlearn::cextend(tamu(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::tamu(data()), strict=FALSE)
     } else if (input$alg == "mmhc") {
-      dag <- bnlearn::cextend(mmhc(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::mmhc(data()), strict=FALSE)
     } else if (input$alg == "rsmax2") {
-      dag <- bnlearn::cextend(rsmax2(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::rsmax2(data()), strict=FALSE)
     } else if (input$alg == "mmpc") {
-      dag <- bnlearn::cextend(mmpc(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::mmpc(data()), strict=FALSE)
     } else if (input$alg == "si.hiton.pc") {
-      dag <- bnlearn::cextend(si.hiton.pc(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::si.hiton.pc(data()), strict=FALSE)
     } else if (input$alg == "aracne") {
-      dag <- bnlearn::cextend(aracne(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::aracne(data()), strict=FALSE)
     } else
-      dag <- bnlearn::cextend(chow.liu(data()), strict=FALSE)
+      dag <- bnlearn::cextend(bnlearn::chow.liu(data()), strict=FALSE)
   })
 
   # Create the nodes box

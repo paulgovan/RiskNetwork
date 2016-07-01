@@ -2,7 +2,6 @@
 #'
 #' RiskNetwork is a Shiny web application for risk network modeling and
 #' analysis.
-#' @import bnlearn
 #' @import shiny
 #' @import shinydashboard
 #' @export
