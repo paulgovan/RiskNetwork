@@ -323,12 +323,12 @@ shinyServer(function(input, output, session) {
   output$netTable <- d3heatmap::renderD3heatmap({
     if (is.null(data()))
       return(NULL)
-      d3heatmap::d3heatmap(amat(dag()), dendrogram = input$dendrogram, symm = TRUE,
+      d3heatmap::d3heatmap(bnlearn::amat(dag()), dendrogram = input$dendrogram, symm = TRUE,
                 cexRow = 0.7, cexCol = 0.7, colors = "Blues")
   })
 
   simData <- reactive({
-    simData <- rbn(fit(), input$n)
+    simData <- bnlearn::rbn(fit(), input$n)
   })
 
   output$downloadData <- downloadHandler(
