@@ -8,11 +8,11 @@ shinyServer(function(input, output, session) {
   # Get data
   data <- reactive({
     if (input$net == 1) {
-      data <- learning.test
+      data <- data(learning.test)
     } else if (input$net == 2) {
-      data <- gaussian.test
+      data <- data(gaussian.test)
     } else if (input$net == 3) {
-      data <- insurance
+      data <- data(insurance)
     } else if (input$net == 4) {
       data <- matrix(NA, ncol = 14)
       colnames(data) <- c("Cause-Delays on other project", "Cause-Install scheduled during hurricane season", "Risk-vessel delayed on other project", "Risk-Inclement weather", "Resource-Transport vessel rate", "Resource-2 transport vessels", "Resource-1 install vessel", "Resource-Install vessel rate", "Resource-25 HUC personnel", "Resource-HUC personnel rate", "Task-Jacket, topsides, pile tow", "Task-Offshore install", "Task-HUC", "Project-Platform install")

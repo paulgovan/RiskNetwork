@@ -2,9 +2,9 @@
 #'
 #' RiskNetwork is a Shiny web application for risk network modeling and
 #' analysis.
+#' @import bnlearn
 #' @import shiny
 #' @import shinydashboard
-#' @import bnlearn
 #' @export
 RiskNetwork <- function() {
   shiny::runApp(system.file('rn', package='RiskNetwork'))
