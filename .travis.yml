@@ -1,2 +1,14 @@
 language: r
+
 cache: packages
+
+install:
+  - Rscript -e 'install.packages(c("devtools","roxygen2"))'
+  - Rscript -e 'devtools::install_github("paulgovan/RiskNetwork")'
+script:
+  - Rscript -e 'devtools::check("RiskNetwork")'
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
