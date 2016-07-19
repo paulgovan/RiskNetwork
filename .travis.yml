@@ -4,8 +4,6 @@ cache: packages
 
 install:
   - Rscript -e 'install.packages(c("devtools","roxygen2"))'
-script:
-  - Rscript -e 'devtools::check("RiskNetwork")'
 
 notifications:
   email:
