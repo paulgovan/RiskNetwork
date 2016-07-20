@@ -10,4 +10,9 @@ RiskNetwork()
 RiskNetwork is a Shiny web application for risk network modeling and
 analysis.
 }
+\examples{
+if (interactive()) {
+  RiskNetwork()
+}
+}
 

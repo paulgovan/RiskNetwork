@@ -10,6 +10,10 @@
 #' @import shiny
 #' @import shinydashboard
 #' @export
+#' @examples
+#' if (interactive()) {
+#'   RiskNetwork()
+#' }
 RiskNetwork <- function() {
   shiny::runApp(system.file('rn', package='RiskNetwork'))
 }
