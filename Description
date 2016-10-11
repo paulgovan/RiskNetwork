@@ -1,7 +1,7 @@
 Package: RiskNetwork
 Version: 0.1.0
 Title: Risk Network Modeling and Analysis
-Description: A Shiny web application for creating interactive Risk network models,
+Description: A 'Shiny' web application for creating interactive risk network models,
     learning the structure and parameters of Bayesian networks, and utilities for classical
     network analysis.
 URL: https://github.com/paulgovan/risknetwork
