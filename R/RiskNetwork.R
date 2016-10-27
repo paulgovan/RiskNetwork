@@ -10,6 +10,7 @@
 #' @import shiny
 #' @import shinydashboard
 #' @export
+#' @seealso \url{http://paulgovan.github.io/RiskNetwork/}
 #' @examples
 #' if (interactive()) {
 #'   RiskNetwork()
