@@ -1,19 +1,14 @@
 shinydashboard::dashboardPage(
   skin = "black",
   shinydashboard::dashboardHeader(
-    title = "RiskNetwork",
-    shinydashboard::dropdownMenu(
-      type = "messages",
-      shinydashboard::messageItem(from = "Support",
-                                  message = "Welcome to RiskNetwork!")
-    )
+    title = "RiskNetwork"
   ),
   shinydashboard::dashboardSidebar(
     shinydashboard::sidebarMenu(
       shinydashboard::menuItem(
-        "Dashboard",
+        "Home",
         tabName = "dashboard",
-        icon = shiny::icon("dashboard")
+        icon = shiny::icon("home")
       ),
       shinydashboard::menuItem(
         "Structure",
@@ -43,7 +38,14 @@ shinydashboard::dashboardPage(
         "Simulation",
         tabName = "simulation",
         icon = shiny::icon("random")
-      )
+      ),
+      br(),
+      shinydashboard::menuItem("Help",
+                               icon = icon("info-circle"),
+                               href = "http://paulgovan.github.io/RiskNetwork/"),
+      shinydashboard::menuItem("Source Code",
+                               icon = icon("code"),
+                               href = "https://github.com/paulgovan/RiskNetwork")
     )
   ),
   shinydashboard::dashboardBody(
@@ -56,7 +58,7 @@ shinydashboard::dashboardPage(
         tabName = "dashboard",
         shiny::fluidRow(
           shinydashboard::box(
-            title = "RiskNetwork",
+            title = "",
             status = "primary",
             solidHeader = TRUE,
             width = 8,
@@ -66,21 +68,25 @@ shinydashboard::dashboardPage(
               width = 50
             ),
             shiny::h3("Welcome to RiskNetwork!"),
+            br(),
             shiny::h4(
               "RiskNetwork is a ",
               shiny::a(href = 'http://shiny.rstudio.com', 'Shiny'),
               "web application for risk network modeling and analysis, powered by",
               shiny::a(href = 'http://www.bnlearn.com', 'bnlearn'),
               'and',
-              shiny::a(href = 'http://christophergandrud.github.io/networkD3/', 'networkD3')
+              shiny::a(href = 'http://christophergandrud.github.io/networkD3/', 'networkD3'),
+              '.'
             ),
             shiny::h4(
               "Click",
               shiny::em("Structure"),
               " in the sidepanel to get started"
             ),
+            br(),
             shiny::h4(
-              'Copyright 2015 By Paul Govan. ',
+              shiny::HTML('&copy'),
+              '2016 By Paul Govan. ',
               shiny::a(href = 'http://www.apache.org/licenses/LICENSE-2.0', 'Terms of Use.')
             )
           ),
