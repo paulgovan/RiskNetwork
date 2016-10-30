@@ -52,6 +52,13 @@ shiny::shinyServer(function(input, output, session) {
   dag <- shiny::reactive({
     if (is.null(data()))
       return(NULL)
+
+    # Create a Progress object
+    progress <- shiny::Progress$new()
+    # Make sure it closes when we exit this reactive, even if there's an error
+    on.exit(progress$close())
+    progress$set(message = "Learning network structure", value = 0)
+
     if (input$net == 4) {
       dag <-
         bnlearn::model2network(
@@ -436,22 +443,42 @@ shiny::shinyServer(function(input, output, session) {
     shiny::updateSelectInput(session, "event", choices = names(data()))
   })
 
-  #   # Perform Bayesian Inference based on evidence and print results
-  #   output$distPrint <- shiny::renderPrint({
-  #     if (is.null(data()))
-  #       return(NULL)
-  #     if (bnlearn::directed(dag())) {
-  #       fitted = fit()
-  #       evidence = as.vector(input$evidence)
-  #       value = as.vector(input$val)
-  #       node.dist <- bnlearn::cpdist(fitted, input$event, eval(parse(text = paste("(", evidence, "=='",
-  #                                                                        sapply(value, as.numeric), "')",
-  #                                                                        sep = "", collapse = " & "))), method = input$inf)
-  #     } else
-  #       shiny::validate(
-  #         shiny::need(try(distPlot != ""), "Make sure your network is completely directed in order to perform Bayesian inference...")
-  #       )
-  #   })
+  shiny::observe({
+    shiny::updateSelectInput(session, "evidenceNode", choices = names(data()))
+  })
+
+  shiny::observe({
+    whichNode <- which(colnames(data()) == input$evidenceNode)
+    evidenceLevels <- as.vector(unique(data()[,whichNode]))
+    shiny::updateSelectInput(session, "evidence", choices = evidenceLevels)
+  })
+
+  shiny::observe({
+    shiny::updateSelectInput(session, "event", choices = names(data()))
+  })
+
+  # Perform Bayesian Inference based on evidence and plot results
+  output$distPlot <- shiny::renderPlot({
+    if (is.null(data()))
+      return(NULL)
+    if (is.numeric(data()[,1]))
+      shiny::validate(
+        shiny::need(
+          try(distPlot != ""),
+          "Inference is currently not supported for continuous variables..."
+        )
+      )
+    str1 <<- paste0("(", input$evidenceNode, "=='", input$evidence, "')")
+    nodeProbs <- prop.table(table(bnlearn::cpdist(fit(), input$event, eval(parse(text = str1)))))
+    barplot(
+      nodeProbs,
+      col = "lightblue",
+      main = "Conditional Probabilities",
+      border = NA,
+      xlab = "Levels",
+      ylab = "Probabilities"
+    )
+  })
 
   shiny::observe({
     shiny::updateSelectInput(session, "nodeNames", choices = colnames(data()))
