@@ -2,8 +2,8 @@ name: RiskNetwork
 account: paulgovan
 server: shinyapps.io
 appId: 21903
-bundleId: 562191
+bundleId: 602019
 url: https://paulgovan.shinyapps.io/RiskNetwork/
-when: 1474337551.98754
+when: 1477962598.38663
 asMultiple: FALSE
 asStatic: FALSE

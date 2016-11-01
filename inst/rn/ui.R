@@ -274,6 +274,7 @@ shinydashboard::dashboardPage(
                                   shinydashboard::box(
                                     title = "Evidence",
                                     status = "primary",
+                                    solidHeader = TRUE,
                                     collapsible = TRUE,
                                     width = NULL,
                                     helpText("Select evidence to add to the model:"),
@@ -297,6 +298,7 @@ shinydashboard::dashboardPage(
                                   shinydashboard::box(
                                     title = "Event",
                                     status = "primary",
+                                    solidHeader = TRUE,
                                     collapsible = TRUE,
                                     width = NULL,
                                     helpText("Select an event of interest:"),
@@ -309,6 +311,7 @@ shinydashboard::dashboardPage(
                                   shinydashboard::box(
                                     title = "Event Paramater",
                                     status = "primary",
+                                    solidHeader = TRUE,
                                     collapsible = TRUE,
                                     width = NULL,
                                     shiny::plotOutput("distPlot")
