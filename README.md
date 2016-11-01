@@ -21,7 +21,7 @@ To launch the app:
 RiskNetwork()
 ```
 
-Or to access the app through a browser, visit [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/risknetwork). 
+Or to access the app through a browser, visit [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/RiskNetwork/). 
 
 # Example
 ## Dashboard
