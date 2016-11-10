@@ -5,37 +5,31 @@ shinydashboard::dashboardPage(
   ),
   shinydashboard::dashboardSidebar(
     shinydashboard::sidebarMenu(
-      shinydashboard::menuItem(
-        "Home",
-        tabName = "dashboard",
-        icon = shiny::icon("home")
+      shinydashboard::menuItem("Home",
+                               tabName = "dashboard",
+                               icon = shiny::icon("home")
       ),
-      shinydashboard::menuItem(
-        "Structure",
-        icon = shiny::icon("globe"),
-        tabName = "structure"
+      shinydashboard::menuItem("Structure",
+                               icon = shiny::icon("globe"),
+                               tabName = "structure"
       ),
-      shinydashboard::menuItem(
-        "Parameters",
-        tabName = "paramaters",
-        icon = shiny::icon("bar-chart")
+      shinydashboard::menuItem("Parameters",
+                               tabName = "paramaters",
+                               icon = shiny::icon("bar-chart")
       ),
-      shinydashboard::menuItem(
-        "Inference",
-        icon = shiny::icon("arrow-right"),
-        tabName = "inference",
-        badgeLabel = "New",
-        badgeColor = "green"
+      shinydashboard::menuItem("Inference",
+                               icon = shiny::icon("arrow-right"),
+                               tabName = "inference",
+                               badgeLabel = "New",
+                               badgeColor = "green"
       ),
-      shinydashboard::menuItem(
-        "Measures",
-        tabName = "measures",
-        icon = shiny::icon("table")
+      shinydashboard::menuItem("Measures",
+                               tabName = "measures",
+                               icon = shiny::icon("table")
       ),
-      shinydashboard::menuItem(
-        "Simulation",
-        tabName = "simulation",
-        icon = shiny::icon("random")
+      shinydashboard::menuItem("Simulation",
+                               tabName = "simulation",
+                               icon = shiny::icon("random")
       ),
       br(),
       shinydashboard::menuItem("Help",
@@ -318,69 +312,68 @@ shinydashboard::dashboardPage(
                                   )
                                 )
                               )),
-      shinydashboard::tabItem(
-        tabName = "measures",
-        shiny::fluidRow(
-          shinydashboard::box(
-            title = "Node Control",
-            status = "primary",
-            solidHeader = TRUE,
-            collapsible = TRUE,
-            width = 4,
-            shiny::helpText("Select a node measure:"),
-            shiny::selectInput(
-              "nodeMeasure",
-              shiny::h5("Node Measure:"),
-              c("Markov Blanket" = "mb",
-                "Neighborhood" = "nbr",
-                "Parents" = "parents",
-                "Children" = "children",
-                "In Degree" = "in.degree",
-                "Out Degree" = "out.degree",
-                "Incident Arcs" = "incident.arcs",
-                "Incoming Arcs" = "incoming.arcs",
-                "Outgoing Arcs" = "outgoing.arcs"
-              )
-            ),
-            shiny::selectInput("nodeNames", label = shiny::h5("Node:"),
-                               "")
-          ),
-          shinydashboard::box(
-            title = "Node Measure",
-            status = "primary",
-            solidHeader = TRUE,
-            collapsible = TRUE,
-            width = 8,
-            shiny::verbatimTextOutput("nodeText")
-          )
-        ),
-        shiny::fluidRow(
-          shinydashboard::box(
-            title = "Network Control",
-            status = "primary",
-            solidHeader = TRUE,
-            collapsible = TRUE,
-            width = 4,
-            shiny::helpText("Select a network measure:"),
-            shiny::selectInput(
-              "dendrogram",
-              shiny::h5("Dendrogram:"),
-              c("Both" = "both",
-                "Row" = "row",
-                "Column" = "column",
-                "None" = "none"
-              )
-            )
-          ),
-          shinydashboard::box(
-            title = "Network Measure",
-            status = "primary",
-            solidHeader = TRUE,
-            collapsible = TRUE,
-            width = 8,
-            d3heatmap::d3heatmapOutput("netTable")
-          )
-        )
+      shinydashboard::tabItem(tabName = "measures",
+                              shiny::fluidRow(
+                                shinydashboard::box(
+                                  title = "Node Measure Controls",
+                                  status = "primary",
+                                  solidHeader = TRUE,
+                                  collapsible = TRUE,
+                                  width = 4,
+                                  shiny::helpText("Select a node measure:"),
+                                  shiny::selectInput(
+                                    "nodeMeasure",
+                                    shiny::h5("Node Measure:"),
+                                    c("Markov Blanket" = "mb",
+                                      "Neighborhood" = "nbr",
+                                      "Parents" = "parents",
+                                      "Children" = "children",
+                                      "In Degree" = "in.degree",
+                                      "Out Degree" = "out.degree",
+                                      "Incident Arcs" = "incident.arcs",
+                                      "Incoming Arcs" = "incoming.arcs",
+                                      "Outgoing Arcs" = "outgoing.arcs"
+                                    )
+                                  ),
+                                  shiny::selectInput("nodeNames", label = shiny::h5("Node:"),
+                                                     "")
+                                ),
+                                shinydashboard::box(
+                                  title = "Node Measure",
+                                  status = "primary",
+                                  solidHeader = TRUE,
+                                  collapsible = TRUE,
+                                  width = 8,
+                                  shiny::verbatimTextOutput("nodeText")
+                                )
+                              ),
+                              shiny::fluidRow(
+                                shinydashboard::box(
+                                  title = "Network Measure Control",
+                                  status = "primary",
+                                  solidHeader = TRUE,
+                                  collapsible = TRUE,
+                                  width = 4,
+                                  shiny::helpText("Select a network measure:"),
+                                  shiny::selectInput(
+                                    "dendrogram",
+                                    shiny::h5("Dendrogram:"),
+                                    c("Both" = "both",
+                                      "Row" = "row",
+                                      "Column" = "column",
+                                      "None" = "none"
+                                    )
+                                  )
+                                ),
+                                shinydashboard::box(
+                                  title = "Network Measure",
+                                  status = "primary",
+                                  solidHeader = TRUE,
+                                  collapsible = TRUE,
+                                  width = 8,
+                                  d3heatmap::d3heatmapOutput("netTable")
+                                )
+                              )
       ),
       shinydashboard::tabItem(tabName = "simulation",
                               shiny::fluidRow(

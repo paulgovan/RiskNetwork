@@ -2,14 +2,18 @@
 # setting this option. Here we'll raise limit to 9MB.
 options(shiny.maxRequestSize = 10 * 1024 ^ 2)
 
-# Load data
+# Load demo data from 'bnlearn'
 data(learning.test, package = "bnlearn")
 data(gaussian.test, package = "bnlearn")
 data(insurance, package = "bnlearn")
 
+#' @import bnlearn
+#' @import shiny
+#' @import shinydashboard
 # Define required server logic
 shiny::shinyServer(function(input, output, session) {
-  # Get data
+
+  # Get the data selection from the user
   data <- shiny::reactive({
     if (input$net == 1) {
       data <- learning.test
@@ -18,6 +22,8 @@ shiny::shinyServer(function(input, output, session) {
     } else if (input$net == 3) {
       data <- insurance
     } else if (input$net == 4) {
+
+      # Create an example risk network
       data <- matrix(NA, ncol = 14)
       colnames(data) <-
         c(
@@ -38,7 +44,8 @@ shiny::shinyServer(function(input, output, session) {
         )
       data
     } else  {
-      # Get uploaded file
+
+      # Get the uploaded file from the user
       inFile <- input$file
       if (is.null(inFile))
         return(NULL)
@@ -59,11 +66,14 @@ shiny::shinyServer(function(input, output, session) {
     on.exit(progress$close())
     progress$set(message = "Learning network structure", value = 0)
 
+    # Create an example risk network
     if (input$net == 4) {
       dag <-
         bnlearn::model2network(
           "[Cause-Delays on other project][Cause-Install scheduled during hurricane season][Risk-vessel delayed on other project|Cause-Delays on other project][Risk-Inclement weather|Cause-Install scheduled during hurricane season][Resource-Transport vessel rate][Resource-2 transport vessels|Risk-Inclement weather][Resource-1 install vessel|Risk-Inclement weather][Resource-Install vessel rate|Risk-vessel delayed on other project][Resource-25 HUC personnel][Resource-HUC personnel rate][Task-Jacket, topsides, pile tow|Resource-Transport vessel rate:Resource-2 transport vessels][Task-Offshore install|Resource-Transport vessel rate:Resource-2 transport vessels:Resource-Install vessel rate:Resource-1 install vessel][Task-HUC|Resource-HUC personnel rate:Resource-25 HUC personnel][Project-Platform install|Task-Jacket, topsides, pile tow:Task-Offshore install:Task-HUC]"
         )
+
+      # Get the selected learning algorithm from the user and learn the network
     } else if (input$alg == "gs") {
       dag <- bnlearn::cextend(bnlearn::gs(data()), strict = FALSE)
     } else if (input$alg == "iamb") {
@@ -90,10 +100,12 @@ shiny::shinyServer(function(input, output, session) {
       dag <- bnlearn::cextend(bnlearn::chow.liu(data()), strict = FALSE)
   })
 
-  # Create the nodes box
+  # Create the nodes value box
   output$nodesBox <- shiny::renderUI({
     if (is.null(data()))
       return(NULL)
+
+    # Get the number of nodes in the network
     nodes <- bnlearn::nnodes(dag())
     shinydashboard::valueBox(nodes,
                              "Nodes",
@@ -101,10 +113,12 @@ shiny::shinyServer(function(input, output, session) {
                              color = "blue")
   })
 
-  # Create the arcs box
+  # Create the arcs value box
   output$arcsBox <- shiny::renderUI({
     if (is.null(data()))
       return(NULL)
+
+    # Get the number of arcs in the network
     arcs <- bnlearn::narcs(dag())
     shinydashboard::valueBox(arcs,
                              "Arcs",
@@ -112,11 +126,14 @@ shiny::shinyServer(function(input, output, session) {
                              color = "green")
   })
 
-  # Plot the force directed network
+  # Plot the d3 force directed network
   output$netPlot <- networkD3::renderSimpleNetwork({
     if (is.null(data()))
       return(NULL)
+
+    # Get the arc directions
     networkData <- data.frame(bnlearn::arcs(dag()))
+
     networkD3::simpleNetwork(
       networkData,
       Source = "from",
@@ -130,7 +147,11 @@ shiny::shinyServer(function(input, output, session) {
     if (is.null(data()) | input$net == 4)
       return(NULL)
     if (bnlearn::directed(dag())) {
+
+      # If the data is continuous,...
       if (is.numeric(data()[, 1])) {
+
+        # Get the selected score function from the user and calculate the score
         if (input$type == "loglik") {
           bnlearn::score(dag(), data(), type = "loglik-g")
         } else if (input$type == "aic") {
@@ -141,6 +162,8 @@ shiny::shinyServer(function(input, output, session) {
           bnlearn::score(dag(), data(), type = "bge")
         }
       }
+
+      # If the data is discrete,...
       else {
         if (input$type == "loglik") {
           bnlearn::score(dag(), data(), type = "loglik")
@@ -165,30 +188,29 @@ shiny::shinyServer(function(input, output, session) {
   fit <- shiny::reactive({
     if (is.null(data()))
       return(NULL)
+
+    # Create an example risk network
     if (input$net == 4) {
       tf <- c("True", "False")
-      cptC1 <-
-        matrix(c(0.75, 0.25),
-               ncol = 2,
-               dimnames = list(NULL, tf))
+      cptC1 <- matrix(c(0.75, 0.25),
+                      ncol = 2,
+                      dimnames = list(NULL, tf))
       cptC2 <- matrix(c(0.5, 0.5),
                       ncol = 2,
                       dimnames = list(NULL, tf))
-      cptR1 <- matrix(
-        c(0.95, 0.05, 0.25, 0.75),
-        ncol = 2,
-        dimnames = list(
-          "Risk-vessel delayed on other project" = tf,
-          "Cause-Delays on other project" = tf
-        )
+      cptR1 <- matrix(c(0.95, 0.05, 0.25, 0.75),
+                      ncol = 2,
+                      dimnames = list(
+                        "Risk-vessel delayed on other project" = tf,
+                        "Cause-Delays on other project" = tf
+                      )
       )
-      cptR2 <- matrix(
-        c(0.75, 0.25, 0.4, 0.6),
-        ncol = 2,
-        dimnames = list(
-          "Risk-Inclement weather" = tf,
-          "Cause-Install scheduled during hurricane season" = tf
-        )
+      cptR2 <- matrix(c(0.75, 0.25, 0.4, 0.6),
+                      ncol = 2,
+                      dimnames = list(
+                        "Risk-Inclement weather" = tf,
+                        "Cause-Install scheduled during hurricane season" = tf
+                      )
       )
       lh <- c("Low", "High")
       cptQ1 <- matrix(
@@ -202,21 +224,19 @@ shiny::shinyServer(function(input, output, session) {
       cptU1 <- matrix(c(0.5, 0.5),
                       ncol = 2,
                       dimnames = list(NULL, lh))
-      cptQ2 <- matrix(
-        c(0.1, 0.9, 0.5, 0.5),
-        ncol = 2,
-        dimnames = list(
-          "Resource-1 install vessel" = lh,
-          "Risk-Inclement weather" = tf
-        )
+      cptQ2 <- matrix(c(0.1, 0.9, 0.5, 0.5),
+                      ncol = 2,
+                      dimnames = list(
+                        "Resource-1 install vessel" = lh,
+                        "Risk-Inclement weather" = tf
+                      )
       )
-      cptU2 <- matrix(
-        c(0.1, 0.9, 0.8, 0.2),
-        ncol = 2,
-        dimnames = list(
-          "Resource-Install vessel rate" = lh,
-          "Risk-vessel delayed on other project" = tf
-        )
+      cptU2 <- matrix(c(0.1, 0.9, 0.8, 0.2),
+                      ncol = 2,
+                      dimnames = list(
+                        "Resource-Install vessel rate" = lh,
+                        "Risk-vessel delayed on other project" = tf
+                      )
       )
       cptQ3 <- matrix(c(0.7, 0.3),
                       ncol = 2,
@@ -232,41 +252,39 @@ shiny::shinyServer(function(input, output, session) {
           "Resource-2 transport vessels" = lh,
           "Resource-Transport vessel rate" = lh
         )
-      cptT2 <-
-        c(
-          1.0,
-          0.0,
-          0.75,
-          0.25,
-          0.75,
-          0.25,
-          0.5,
-          0.5,
-          0.75,
-          0.25,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.25,
-          0.75,
-          0.75,
-          0.25,
-          0.5,
-          0.5,
-          0.5,
-          0.5,
-          0.25,
-          0.75,
-          0.5,
-          0.5,
-          0.25,
-          0.75,
-          0.25,
-          0.75,
-          0.0,
-          1.0
-        )
+      cptT2 <-c(1.0,
+                0.0,
+                0.75,
+                0.25,
+                0.75,
+                0.25,
+                0.5,
+                0.5,
+                0.75,
+                0.25,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.25,
+                0.75,
+                0.75,
+                0.25,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.25,
+                0.75,
+                0.5,
+                0.5,
+                0.25,
+                0.75,
+                0.25,
+                0.75,
+                0.0,
+                1.0
+      )
       dim(cptT2) <- c(2, 2, 2, 2, 2)
       dimnames(cptT2) <-
         list(
@@ -284,25 +302,23 @@ shiny::shinyServer(function(input, output, session) {
           "Resource-25 HUC personnel" = lh,
           "Resource-HUC personnel rate" = lh
         )
-      cptP <-
-        c(
-          1.0,
-          0.0,
-          0.67,
-          0.33,
-          0.67,
-          0.33,
-          0.33,
-          0.67,
-          0.67,
-          0.33,
-          0.33,
-          0.67,
-          0.33,
-          0.67,
-          0.0,
-          1.0
-        )
+      cptP <- c(1.0,
+                0.0,
+                0.67,
+                0.33,
+                0.67,
+                0.33,
+                0.33,
+                0.67,
+                0.67,
+                0.33,
+                0.33,
+                0.67,
+                0.33,
+                0.67,
+                0.0,
+                1.0
+      )
       dim(cptP) <- c(2, 2, 2, 2)
       dimnames(cptP) <-
         list(
@@ -311,28 +327,25 @@ shiny::shinyServer(function(input, output, session) {
           "Task-Offshore install" = lh,
           "Task-HUC" = lh
         )
-      fit <-
-        bnlearn::custom.fit(
-          dag(),
-          dist = list(
-            "Cause-Delays on other project" = cptC1,
-            "Cause-Install scheduled during hurricane season" = cptC2,
-            "Risk-vessel delayed on other project" = cptR1,
-            "Risk-Inclement weather" = cptR2,
-            "Resource-2 transport vessels" =
-              cptQ1,
-            "Resource-Transport vessel rate" = cptU1,
-            "Resource-1 install vessel" = cptQ2,
-            "Resource-Install vessel rate" = cptU2,
-            "Resource-25 HUC personnel" =
-              cptQ3,
-            "Resource-HUC personnel rate" = cptU3,
-            "Task-Jacket, topsides, pile tow" = cptT1,
-            "Task-Offshore install" = cptT2,
-            "Task-HUC" = cptT3,
-            "Project-Platform install" = cptP
-          )
+      fit <- bnlearn::custom.fit(
+        dag(),
+        dist = list(
+          "Cause-Delays on other project" = cptC1,
+          "Cause-Install scheduled during hurricane season" = cptC2,
+          "Risk-vessel delayed on other project" = cptR1,
+          "Risk-Inclement weather" = cptR2,
+          "Resource-2 transport vessels" = cptQ1,
+          "Resource-Transport vessel rate" = cptU1,
+          "Resource-1 install vessel" = cptQ2,
+          "Resource-Install vessel rate" = cptU2,
+          "Resource-25 HUC personnel" = cptQ3,
+          "Resource-HUC personnel rate" = cptU3,
+          "Task-Jacket, topsides, pile tow" = cptT1,
+          "Task-Offshore install" = cptT2,
+          "Task-HUC" = cptT3,
+          "Project-Platform install" = cptP
         )
+      )
     } else if (bnlearn::directed(dag())) {
       fit <- bnlearn::bn.fit(dag(), data(), method = input$met)
     }
@@ -394,19 +407,25 @@ shiny::shinyServer(function(input, output, session) {
 
   # Set the paramater graphic options
   graphic <- shiny::reactive({
+
+    # If the data is continuous,...
     if (is.numeric(data()[, 1])) {
       graphic <- c("Histogram" = "histogram",
                    "XY Plot" = "xyplot",
                    "QQ Plot" = "qqplot")
+      # If the data is discrete,...
     } else {
       graphic <- c("Bar Chart" = "barchart",
                    "Dot Plot" = "dotplot")
     }
   })
 
+  # Send the paramater choices to the user
   shiny::observe({
     shiny::updateSelectInput(session, "param", choices = graphic())
   })
+
+  # Send the node choices to the user
   shiny::observe({
     shiny::updateSelectInput(session, "Node", choices = colnames(data()))
   })
@@ -416,6 +435,8 @@ shiny::shinyServer(function(input, output, session) {
     if (is.null(data()))
       return(NULL)
     if (bnlearn::directed(dag())) {
+
+      # Get the selected graphic from the user and plot the paramaters
       if (input$param == "histogram") {
         bnlearn::bn.fit.histogram(fit())
       } else if (input$param == "xyplot") {
@@ -435,24 +456,24 @@ shiny::shinyServer(function(input, output, session) {
       )
   })
 
-  shiny::observe({
-    shiny::updateSelectInput(session, "evidence", choices = names(data()))
-  })
-
+  # Send the event node choices to the user
   shiny::observe({
     shiny::updateSelectInput(session, "event", choices = names(data()))
   })
 
+  # Send the event node choices to the user
   shiny::observe({
     shiny::updateSelectInput(session, "evidenceNode", choices = names(data()))
   })
 
+  # Send the evidence choices to the user
   shiny::observe({
     whichNode <- which(colnames(data()) == input$evidenceNode)
     evidenceLevels <- as.vector(unique(data()[,whichNode]))
     shiny::updateSelectInput(session, "evidence", choices = evidenceLevels)
   })
 
+  # Send the event node choices to the user
   shiny::observe({
     shiny::updateSelectInput(session, "event", choices = names(data()))
   })
@@ -468,8 +489,14 @@ shiny::shinyServer(function(input, output, session) {
           "Inference is currently not supported for continuous variables..."
         )
       )
+
+    # Create a string of the selected evidence
     str1 <<- paste0("(", input$evidenceNode, "=='", input$evidence, "')")
+
+    # Estimate the conditional PD and tabularize the results
     nodeProbs <- prop.table(table(bnlearn::cpdist(fit(), input$event, eval(parse(text = str1)))))
+
+    # Create a bar plot of the conditional PD
     barplot(
       nodeProbs,
       col = "lightblue",
@@ -481,11 +508,12 @@ shiny::shinyServer(function(input, output, session) {
     )
   })
 
+  # Send the node names to the user
   shiny::observe({
     shiny::updateSelectInput(session, "nodeNames", choices = colnames(data()))
   })
 
-  # Show node measures
+  # Get the selected node measure from the user and print the results
   output$nodeText <- shiny::renderText({
     if (is.null(data()))
       return(NULL)
@@ -511,10 +539,12 @@ shiny::shinyServer(function(input, output, session) {
       bnlearn::incident.arcs(dag(), input$nodeNames)
   })
 
-  # Show network measures
+  # Get the selected network measure from the user and plot the results
   output$netTable <- d3heatmap::renderD3heatmap({
     if (is.null(data()))
       return(NULL)
+
+    # Plot a d3 heatmap of the adjacency matrix
     d3heatmap::d3heatmap(
       bnlearn::amat(dag()),
       dendrogram = input$dendrogram,
@@ -525,10 +555,12 @@ shiny::shinyServer(function(input, output, session) {
     )
   })
 
+  # Get the sample size from the user and simulate data from the network
   simData <- shiny::reactive({
     simData <- bnlearn::rbn(fit(), input$n)
   })
 
+  # Create a handler for downloading the simulated data
   output$downloadData <- shiny::downloadHandler(
     filename = function() {
       paste('bn', '.csv', sep = '')
