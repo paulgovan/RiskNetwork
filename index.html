@@ -45,7 +45,7 @@
 
 <p>To launch the app:</p>
 
-<pre><code>RiskNetwork()
+<pre><code>RiskNetwork::RiskNetwork()
 </code></pre>
 
 <p>Or to access the app through a browser, visit <a href="https://paulgovan.shinyapps.io/RiskNetwork/">paulgovan.shinyapps.io/RiskNetwork</a>. </p>
@@ -54,24 +54,24 @@
 <a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h1>
 
 <h2>
-<a id="dashboard" class="anchor" href="#dashboard" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dashboard</h2>
+<a id="home" class="anchor" href="#home" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Home</h2>
 
-<p>Launching the app brings up the <em>Dashboard</em>. The <em>Dashboard</em> is basically a landing page that gives a brief introduction to the app and includes two value boxes, one each for the number of <em>nodes</em> and <em>arcs</em> in the network. </p>
+<p>Launching the app brings up the Home. The Home is basically a landing page that gives a brief introduction to the app and includes two value boxes, one each for the number of <em>nodes</em> and <em>arcs</em> in the network. </p>
 
 <p>RiskNetwork comes with a number of simulated and "real world" data sets. This example will use the "Sample Discrete Network", which is the selected network by default.</p>
 
-<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Dashboard.PNG?raw=true" alt="Dashboard"></p>
+<p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Dashboard.PNG?raw=true" alt="Home"></p>
 
 <h2>
 <a id="structure" class="anchor" href="#structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structure</h2>
 
-<p>Click <em>Structure</em> in the sidepanel to begin learning the network from the data.</p>
+<p>Click Structure in the sidepanel to begin learning the network from the data.</p>
 
-<p>The Bayesian network is automatically displayed in the <em>Risk Network</em> box.</p>
+<p>The Bayesian network is automatically displayed in the Risk Network box.</p>
 
-<p>In order to learn the structure of a network for a given data set, upload the data set in csv format using The <em>Network Input</em> box. Again, this example uses the "Sample Discrete Network", which should already be loaded. </p>
+<p>In order to learn the structure of a network for a given data set, upload the data set in csv format using The Network Input box. Again, this example uses the "Sample Discrete Network", which should already be loaded. </p>
 
-<p>Select a learning algorithm from the <em>Structural Learning</em> box. A number of different stuctural learning algorithms are currently supported, including:  </p>
+<p>Select a learning algorithm from the Structural Learning box. A number of different stuctural learning algorithms are currently supported, including:  </p>
 
 <ul>
 <li>Constraint-based algorithms</li>
@@ -80,7 +80,7 @@
 <li>Local discovery algorithms</li>
 </ul>
 
-<p>To view the network score, select a score function from the The <em>Network Score</em> box. </p>
+<p>To view the network score, select a score function from the The Network Score box. </p>
 
 <p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Structure.PNG?raw=true" alt="Structure"></p>
 
@@ -91,13 +91,13 @@
 <h2>
 <a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h2>
 
-<p>Select the grow-shrink algorithm once again and then click <em>Parameters</em> in the sidepanel in order to learn the parameters of the network.</p>
+<p>Select the grow-shrink algorithm once again and then click Parameters in the sidepanel in order to learn the parameters of the network.</p>
 
-<p>The selected paramaters are automically displayed in the <em>Network Paramaters</em> box.</p>
+<p>The selected paramaters are automically displayed in the Network Paramaters box.</p>
 
-<p>Select a learning algorithm from the <em>Parameter Learning</em> box. This app supports both maximum-likelihood and Bayesian estimation of the parameters. Note that Bayesian parameter learning is currently only implemented for <em>discrete</em> data sets. </p>
+<p>Select a learning algorithm from the Parameter Learning box. This app supports both maximum-likelihood and Bayesian estimation of the parameters. Note that Bayesian parameter learning is currently only implemented for discrete data sets. </p>
 
-<p>Then select the type of chart to display in the <em>Paramter Infographic</em> box and, for the discrete case, choose your preferred node. </p>
+<p>Then select the type of chart to display in the Paramter Infographic box and, for the discrete case, choose your preferred node. </p>
 
 <p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Parameters.PNG?raw=true" alt="Parameters"></p>
 
@@ -106,9 +106,9 @@
 <h2>
 <a id="measures" class="anchor" href="#measures" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Measures</h2>
 
-<p>Click <em>Measures</em> in the sidepanel to bring up a number of tools for classical network analysis. </p>
+<p>Click Measures in the sidepanel to bring up a number of tools for classical network analysis. </p>
 
-<p>The <em>Measures</em> tab has a number of node and network measures. The node measures include:</p>
+<p>The Measures tab has a number of node and network measures. The node measures include:</p>
 
 <ul>
 <li>Markov blanket</li>
@@ -122,18 +122,18 @@
 <li>Outgoing arcs</li>
 </ul>
 
-<p>Select a node measure in the <em>Node Control</em> box and the result will be displayed in the <em>Node Measure</em> box.</p>
+<p>Select a node measure in the Node Control box and the result will be displayed in the Node Measure box.</p>
 
-<p>The <em>Network Control</em> box contains different options for hierarchical clustering of the network. Select the type of dendogram to display (row, column, both, or none) and the resulting dendogram(s) will be displayed along with the adjacency matrix in the <em>Network Measure</em> box.</p>
+<p>The Network Control box contains different options for hierarchical clustering of the network. Select the type of dendogram to display (row, column, both, or none) and the resulting dendogram(s) will be displayed along with the adjacency matrix in the Network Measure box.</p>
 
 <p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Measures.PNG?raw=true" alt="Measures"></p>
 
 <h2>
 <a id="simulation" class="anchor" href="#simulation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simulation</h2>
 
-<p>Finally, click <em>Simulation</em> in the sidepanel in order to simulate data from the network for future use.</p>
+<p>Finally, click Simulation in the sidepanel in order to simulate data from the network for future use.</p>
 
-<p>Simply enter the sample size <em>N</em> in the <em>Network Simulation</em> box and click <em>Download</em> in order to download a random sample of data from the Bayesian network. </p>
+<p>Simply enter the sample size <em>N</em> in the Network Simulation box and click <em>Download</em> in order to download a random sample of data from the Bayesian network. </p>
 
 <p><img src="https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Simulation.PNG?raw=true" alt="Simulation"></p>
 
