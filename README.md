@@ -18,33 +18,33 @@ devtools::install_github('paulgovan/RiskNetwork')
 To launch the app:
 
 ```
-RiskNetwork()
+RiskNetwork::RiskNetwork()
 ```
 
 Or to access the app through a browser, visit [paulgovan.shinyapps.io/RiskNetwork](https://paulgovan.shinyapps.io/RiskNetwork/). 
 
 # Example
-## Dashboard
-Launching the app brings up the *Dashboard*. The *Dashboard* is basically a landing page that gives a brief introduction to the app and includes two value boxes, one each for the number of *nodes* and *arcs* in the network. 
+## Home
+Launching the app brings up the Home. The Home is basically a landing page that gives a brief introduction to the app and includes two value boxes, one each for the number of *nodes* and *arcs* in the network. 
 
 RiskNetwork comes with a number of simulated and "real world" data sets. This example will use the "Sample Discrete Network", which is the selected network by default.
 
-![Dashboard](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Dashboard.PNG?raw=true)
+![Home](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Dashboard.PNG?raw=true)
 
 ## Structure
-Click *Structure* in the sidepanel to begin learning the network from the data.
+Click Structure in the sidepanel to begin learning the network from the data.
 
-The Bayesian network is automatically displayed in the *Risk Network* box.
+The Bayesian network is automatically displayed in the Risk Network box.
 
-In order to learn the structure of a network for a given data set, upload the data set in csv format using The *Network Input* box. Again, this example uses the "Sample Discrete Network", which should already be loaded. 
+In order to learn the structure of a network for a given data set, upload the data set in csv format using The Network Input box. Again, this example uses the "Sample Discrete Network", which should already be loaded. 
 
-Select a learning algorithm from the *Structural Learning* box. A number of different stuctural learning algorithms are currently supported, including:  
+Select a learning algorithm from the Structural Learning box. A number of different stuctural learning algorithms are currently supported, including:  
 * Constraint-based algorithms
 * Score-based algorithms
 * Hybrid-structure algorithms
 * Local discovery algorithms
 
-To view the network score, select a score function from the The *Network Score* box. 
+To view the network score, select a score function from the The Network Score box. 
 
 ![Structure](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Structure.PNG?raw=true)
 
@@ -53,22 +53,22 @@ To view the network score, select a score function from the The *Network Score* 
 Try different combinations of structural learning algorithms and score functions in order to see the effect (if any) on the resulting network.
 
 ## Parameters
-Select the grow-shrink algorithm once again and then click *Parameters* in the sidepanel in order to learn the parameters of the network.
+Select the grow-shrink algorithm once again and then click Parameters in the sidepanel in order to learn the parameters of the network.
 
-The selected paramaters are automically displayed in the *Network Paramaters* box.
+The selected paramaters are automically displayed in the Network Paramaters box.
 
-Select a learning algorithm from the *Parameter Learning* box. This app supports both maximum-likelihood and Bayesian estimation of the parameters. Note that Bayesian parameter learning is currently only implemented for *discrete* data sets. 
+Select a learning algorithm from the Parameter Learning box. This app supports both maximum-likelihood and Bayesian estimation of the parameters. Note that Bayesian parameter learning is currently only implemented for discrete data sets. 
 
-Then select the type of chart to display in the *Paramter Infographic* box and, for the discrete case, choose your preferred node. 
+Then select the type of chart to display in the Paramter Infographic box and, for the discrete case, choose your preferred node. 
 
 ![Parameters](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Parameters.PNG?raw=true)
 
 For example, the selected node *A* is a discrete node with three levels: *a*, *b*, and *c*.
 
 ## Measures
-Click *Measures* in the sidepanel to bring up a number of tools for classical network analysis. 
+Click Measures in the sidepanel to bring up a number of tools for classical network analysis. 
 
-The *Measures* tab has a number of node and network measures. The node measures include:
+The Measures tab has a number of node and network measures. The node measures include:
 * Markov blanket
 * Neighborhood
 * Parents
@@ -79,17 +79,17 @@ The *Measures* tab has a number of node and network measures. The node measures 
 * Incoming arcs
 * Outgoing arcs
 
-Select a node measure in the *Node Control* box and the result will be displayed in the *Node Measure* box.
+Select a node measure in the Node Control box and the result will be displayed in the Node Measure box.
 
-The *Network Control* box contains different options for hierarchical clustering of the network. Select the type of dendogram to display (row, column, both, or none) and the resulting dendogram(s) will be displayed along with the adjacency matrix in the *Network Measure* box.
+The Network Control box contains different options for hierarchical clustering of the network. Select the type of dendogram to display (row, column, both, or none) and the resulting dendogram(s) will be displayed along with the adjacency matrix in the Network Measure box.
 
 ![Measures](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Measures.PNG?raw=true)
 
 ## Simulation
 
-Finally, click *Simulation* in the sidepanel in order to simulate data from the network for future use.
+Finally, click Simulation in the sidepanel in order to simulate data from the network for future use.
 
-Simply enter the sample size *N* in the *Network Simulation* box and click *Download* in order to download a random sample of data from the Bayesian network. 
+Simply enter the sample size *N* in the Network Simulation box and click *Download* in order to download a random sample of data from the Bayesian network. 
 
 ![Simulation](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Simulation.PNG?raw=true)
 

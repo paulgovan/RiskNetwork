@@ -14,18 +14,18 @@ data(insurance, package = "bnlearn")
 shiny::shinyServer(function(input, output, session) {
 
   # Get the data selection from the user
-  data <- shiny::reactive({
+  dat <- shiny::reactive({
     if (input$net == 1) {
-      data <- learning.test
+      dat <- learning.test
     } else if (input$net == 2) {
-      data <- gaussian.test
+      dat <- gaussian.test
     } else if (input$net == 3) {
-      data <- insurance
+      dat <- insurance
     } else if (input$net == 4) {
 
       # Create an example risk network
-      data <- matrix(NA, ncol = 14)
-      colnames(data) <-
+      dat <- matrix(NA, ncol = 14)
+      colnames(dat) <-
         c(
           "Cause-Delays on other project",
           "Cause-Install scheduled during hurricane season",
@@ -42,14 +42,14 @@ shiny::shinyServer(function(input, output, session) {
           "Task-HUC",
           "Project-Platform install"
         )
-      data
+      dat
     } else  {
 
       # Get the uploaded file from the user
       inFile <- input$file
       if (is.null(inFile))
         return(NULL)
-      data <- read.csv(inFile$datapath,
+      dat <- read.csv(inFile$datapath,
                        header = input$header,
                        sep = input$sep)
     }
@@ -57,7 +57,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Learn the structure of the network
   dag <- shiny::reactive({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Create a Progress object
@@ -75,34 +75,34 @@ shiny::shinyServer(function(input, output, session) {
 
       # Get the selected learning algorithm from the user and learn the network
     } else if (input$alg == "gs") {
-      dag <- bnlearn::cextend(bnlearn::gs(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::gs(dat()), strict = FALSE)
     } else if (input$alg == "iamb") {
-      dag <- bnlearn::cextend(bnlearn::iamb(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::iamb(dat()), strict = FALSE)
     } else if (input$alg == "fast.iamb") {
-      dag <- bnlearn::cextend(bnlearn::fast.iamb(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::fast.iamb(dat()), strict = FALSE)
     } else if (input$alg == "inter.iamb") {
-      dag <- bnlearn::cextend(bnlearn::inter.iamb(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::inter.iamb(dat()), strict = FALSE)
     } else if (input$alg == "hc") {
-      dag <- bnlearn::cextend(bnlearn::hc(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::hc(dat()), strict = FALSE)
     } else if (input$alg == "tabu") {
-      dag <- bnlearn::cextend(bnlearn::tabu(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::tabu(dat()), strict = FALSE)
     } else if (input$alg == "mmhc") {
-      dag <- bnlearn::cextend(bnlearn::mmhc(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::mmhc(dat()), strict = FALSE)
     } else if (input$alg == "rsmax2") {
-      dag <- bnlearn::cextend(bnlearn::rsmax2(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::rsmax2(dat()), strict = FALSE)
     } else if (input$alg == "mmpc") {
-      dag <- bnlearn::cextend(bnlearn::mmpc(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::mmpc(dat()), strict = FALSE)
     } else if (input$alg == "si.hiton.pc") {
-      dag <- bnlearn::cextend(bnlearn::si.hiton.pc(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::si.hiton.pc(dat()), strict = FALSE)
     } else if (input$alg == "aracne") {
-      dag <- bnlearn::cextend(bnlearn::aracne(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::aracne(dat()), strict = FALSE)
     } else
-      dag <- bnlearn::cextend(bnlearn::chow.liu(data()), strict = FALSE)
+      dag <- bnlearn::cextend(bnlearn::chow.liu(dat()), strict = FALSE)
   })
 
   # Create the nodes value box
   output$nodesBox <- shiny::renderUI({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Get the number of nodes in the network
@@ -115,7 +115,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Create the arcs value box
   output$arcsBox <- shiny::renderUI({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Get the number of arcs in the network
@@ -128,7 +128,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Plot the d3 force directed network
   output$netPlot <- networkD3::renderSimpleNetwork({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Get the arc directions
@@ -144,35 +144,35 @@ shiny::shinyServer(function(input, output, session) {
 
   # Print the network score
   output$score <- shiny::renderText({
-    if (is.null(data()) | input$net == 4)
+    if (is.null(dat()) | input$net == 4)
       return(NULL)
     if (bnlearn::directed(dag())) {
 
       # If the data is continuous,...
-      if (is.numeric(data()[, 1])) {
+      if (is.numeric(dat()[, 1])) {
 
         # Get the selected score function from the user and calculate the score
         if (input$type == "loglik") {
-          bnlearn::score(dag(), data(), type = "loglik-g")
+          bnlearn::score(dag(), dat(), type = "loglik-g")
         } else if (input$type == "aic") {
-          bnlearn::score(dag(), data(), type = "aic-g")
+          bnlearn::score(dag(), dat(), type = "aic-g")
         } else if (input$type == "bic") {
-          bnlearn::score(dag(), data(), type = "bic-g")
+          bnlearn::score(dag(), dat(), type = "bic-g")
         } else {
-          bnlearn::score(dag(), data(), type = "bge")
+          bnlearn::score(dag(), dat(), type = "bge")
         }
       }
 
       # If the data is discrete,...
       else {
         if (input$type == "loglik") {
-          bnlearn::score(dag(), data(), type = "loglik")
+          bnlearn::score(dag(), dat(), type = "loglik")
         } else if (input$type == "aic") {
-          bnlearn::score(dag(), data(), type = "aic")
+          bnlearn::score(dag(), dat(), type = "aic")
         } else if (input$type == "bic") {
-          bnlearn::score(dag(), data(), type = "bic")
+          bnlearn::score(dag(), dat(), type = "bic")
         } else {
-          bnlearn::score(dag(), data(), type = "bde")
+          bnlearn::score(dag(), dat(), type = "bde")
         }
       }
     } else
@@ -186,7 +186,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Fit the model parameters
   fit <- shiny::reactive({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Create an example risk network
@@ -347,14 +347,14 @@ shiny::shinyServer(function(input, output, session) {
         )
       )
     } else if (bnlearn::directed(dag())) {
-      fit <- bnlearn::bn.fit(dag(), data(), method = input$met)
+      fit <- bnlearn::bn.fit(dag(), dat(), method = input$met)
     }
   })
 
   # Create data frame for selected paramater
   param <- shiny::reactive({
     param <- data.frame(coef(fit()[[input$Node]]))
-    if (is.numeric(data()[, 1])) {
+    if (is.numeric(dat()[, 1])) {
       colnames(param) <- "Param"
       param <- cbind(param = rownames(param), param)
       param[, "Param"] <- round(param[, "Param"], digits = 3)
@@ -375,7 +375,7 @@ shiny::shinyServer(function(input, output, session) {
     } else {
       DF = param()
     }
-    if (is.numeric(data()[, 1])) {
+    if (is.numeric(dat()[, 1])) {
       col <- "Param"
     } else {
       col <- "Freq"
@@ -392,7 +392,7 @@ shiny::shinyServer(function(input, output, session) {
     if (!is.null(values[["hot"]])) {
       expertFit <- fit()
       temp <- data.frame(values[["hot"]])
-      if (is.numeric(data()[, 1])) {
+      if (is.numeric(dat()[, 1])) {
         stdev <- as.numeric(fit()[[input$Node]]["sd"])
         expertFit[[input$Node]] <- list(coef = as.numeric(temp[, "Param"]), sd = stdev)
       } else {
@@ -409,7 +409,7 @@ shiny::shinyServer(function(input, output, session) {
   graphic <- shiny::reactive({
 
     # If the data is continuous,...
-    if (is.numeric(data()[, 1])) {
+    if (is.numeric(dat()[, 1])) {
       graphic <- c("Histogram" = "histogram",
                    "XY Plot" = "xyplot",
                    "QQ Plot" = "qqplot")
@@ -427,12 +427,12 @@ shiny::shinyServer(function(input, output, session) {
 
   # Send the node choices to the user
   shiny::observe({
-    shiny::updateSelectInput(session, "Node", choices = colnames(data()))
+    shiny::updateSelectInput(session, "Node", choices = colnames(dat()))
   })
 
   # Plot the model parameters
   output$condPlot <- shiny::renderPlot({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
     if (bnlearn::directed(dag())) {
 
@@ -458,31 +458,31 @@ shiny::shinyServer(function(input, output, session) {
 
   # Send the event node choices to the user
   shiny::observe({
-    shiny::updateSelectInput(session, "event", choices = names(data()))
+    shiny::updateSelectInput(session, "event", choices = names(dat()))
   })
 
   # Send the event node choices to the user
   shiny::observe({
-    shiny::updateSelectInput(session, "evidenceNode", choices = names(data()))
+    shiny::updateSelectInput(session, "evidenceNode", choices = names(dat()))
   })
 
   # Send the evidence choices to the user
   shiny::observe({
-    whichNode <- which(colnames(data()) == input$evidenceNode)
-    evidenceLevels <- as.vector(unique(data()[,whichNode]))
+    whichNode <- which(colnames(dat()) == input$evidenceNode)
+    evidenceLevels <- as.vector(unique(dat()[,whichNode]))
     shiny::updateSelectInput(session, "evidence", choices = evidenceLevels)
   })
 
   # Send the event node choices to the user
   shiny::observe({
-    shiny::updateSelectInput(session, "event", choices = names(data()))
+    shiny::updateSelectInput(session, "event", choices = names(dat()))
   })
 
   # Perform Bayesian Inference based on evidence and plot results
   output$distPlot <- shiny::renderPlot({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
-    if (is.numeric(data()[,1]))
+    if (is.numeric(dat()[,1]))
       shiny::validate(
         shiny::need(
           try(distPlot != ""),
@@ -510,12 +510,12 @@ shiny::shinyServer(function(input, output, session) {
 
   # Send the node names to the user
   shiny::observe({
-    shiny::updateSelectInput(session, "nodeNames", choices = colnames(data()))
+    shiny::updateSelectInput(session, "nodeNames", choices = colnames(dat()))
   })
 
   # Get the selected node measure from the user and print the results
   output$nodeText <- shiny::renderText({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
     if (input$nodeMeasure == "mb") {
       bnlearn::mb(dag(), input$nodeNames)
@@ -541,7 +541,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Get the selected network measure from the user and plot the results
   output$netTable <- d3heatmap::renderD3heatmap({
-    if (is.null(data()))
+    if (is.null(dat()))
       return(NULL)
 
     # Plot a d3 heatmap of the adjacency matrix
