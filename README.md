@@ -1,12 +1,15 @@
+[Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-deprecated-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#deprecated)
+
 # Features
-* Create interactive risk network models in the cloud
-* Learn the structure of your network with powerful structural learning algorithms
+* Create interactive risk network models
+* Learn the structure of your network with structural learning algorithms
 * Learn the paramaters of your network with effective paramater learning methods
 * Measure the importance of connections in your network with node and network measures
 * Generate data from your network and export to your favorite app
 
 # Overview
-RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk network modeling and analysis, powered by the excellent [bnlearn](http://www.bnlearn.com) and [networkD3](http://christophergandrud.github.io/networkD3/) packages. While this app was developed specifically for risk networks, it can also be used for general [Bayesian Network](https://github.com/paulgovan/BayesianNetwork) modeling and analysis. To learn more about our project, check out this [publication](http://ascelibrary.org/doi/abs/10.1061/(ASCE)CO.1943-7862.0001136). For even more background, see this [publication](http://dx.doi.org/10.1061/(ASCE)CO.1943-7862.0001136).
+RiskNetwork is a [Shiny](http://shiny.rstudio.com) web application for risk network modeling and analysis, powered by the excellent [bnlearn](http://www.bnlearn.com) package. While this app was developed specifically for risk networks, it can also be used for general [Bayesian Network](https://github.com/paulgovan/BayesianNetwork) modeling and analysis.
 
 # Getting Started
 To install RiskNetwork in [R](https://www.r-project.org):
@@ -83,18 +86,3 @@ Finally, click Simulation in the sidepanel in order to simulate data from the ne
 
 ![Simulation](https://github.com/paulgovan/RiskNetwork/blob/master/inst/images/Simulation.PNG?raw=true)
 
-## Future Work
-This package is very much still in development and mutiple improvements are planned, including:
-* Bayesian Inference
-* Expert Kowledge
-
-Please let us know if there are things you would like to see added (or problems with the app!) by opening up an issue using the GitHub issue tracker at [https://github.com/paulgovan/RiskNetwork/issues](https://github.com/paulgovan/RiskNetwork/issues)
-
-# Source Code
-RiskNetwork is an [open source](http://opensource.org) project, and the source code is available at [https://github.com/paulgovan/RiskNetwork](https://github.com/paulgovan/RiskNetwork)
-
-# Contributions
-Contributions are welcome by sending a [pull request](https://github.com/paulgovan/RiskNetwork/pulls)
-
-# License
-RiskNetwork is licensed under the [Apache](http://www.apache.org/licenses/LICENSE-2.0) licence. &copy; Paul Govan (2015)
